@@ -2,12 +2,11 @@
   "name": "jammming",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://acwinters01.github.io/portfolio/jammming/deploy",
+  "homepage": "https://acwinters01.github.io/jammming",
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/user-event": "^13.5.0",
     "css-select": "^5.1.0",
-    "postcss": "^8.4.47",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "resolve-url-loader": "^5.0.0",
@@ -45,10 +44,12 @@
     "@svgr/webpack": "^8.1.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
-    "gh-pages": "^6.2.0",
+    "gh-pages": "^6.3.0",
     "jest": "^27.5.1",
+    "postcss": "^8.5.3",
     "react-app-rewired": "^2.2.1",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "serialize-javascript": "^6.0.2"
   },
   "overrides": {
     "@svgr/webpack": "$@svgr/webpack",
@@ -56,5 +57,4 @@
     "nth-check": ">=2.0.2",
     "serve-static": "2.1.0"
   }
-
 }
