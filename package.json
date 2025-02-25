@@ -2,7 +2,7 @@
   "name": "jammming",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://acwinters01.github.io/jammming/",
+  "homepage": "https://acwinters01.github.io/jammming",
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/user-event": "^13.5.0",
@@ -17,9 +17,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
+  
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +45,7 @@
     "@svgr/webpack": "^8.1.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
+    "gh-pages": "^6.3.0",
     "jest": "^27.5.1",
     "postcss": "^8.5.3",
     "react-app-rewired": "^2.2.1",
