@@ -6,10 +6,13 @@ import PagesSetUp from './PagesSetUp';
 
 export default function Playlist({existingPlaylist, setExistingPlaylist, onNameChange, onEdit, onAdd, 
                                 onRemove, onSave, playlistTracks, playlistName, searchResults, setSearchLoading,
-                                setTransferLoading, onEditOpen, onEditClose, dashboardOpen, setShowModal, showModal}) {
+                                setTransferLoading, onEditOpen, onEditClose, dashboardOpen, setShowModal}) {
     const [selectedPlaylist, setSelectedPlaylist] = useState(null);
     const [currentPlaylistPage, setCurrentPlaylistPage] = useState(0);
     const [tracksEdited, setTracksEdited] = useState([]);
+    const [trackDuplicationCounts, setTrackDuplicationCounts] = useState({});
+    const [ duplicateTrack, setDuplicateTrack ] = useState(null);
+    
     const playlistPerPage = 5;
     const startIndex = currentPlaylistPage * playlistPerPage;
     const currentPlaylists = Array.isArray(existingPlaylist) && 
@@ -120,6 +123,30 @@ export default function Playlist({existingPlaylist, setExistingPlaylist, onNameC
         }
     };
 
+    const handleAddingDuplicateTracks = useCallback((track) => {
+        const baseKey = track.id;
+
+        setTrackDuplicationCounts(prevCounts => {
+            const newCounts = { ...prevCounts };
+            newCounts[baseKey] = (newCounts[baseKey] || 1) + 1;
+
+            const uniqueKey = `${baseKey}-${newCounts[baseKey]}`;
+
+            const trackWithUniqueKey = {
+                ...track,
+                uniqueKey: uniqueKey
+            };
+
+            setTracksEdited(prevTracks => {
+                if (prevTracks.some(t => t.uniqueKey === uniqueKey)) return prevTracks;
+                return [trackWithUniqueKey, ...prevTracks];
+            });
+
+            return newCounts; 
+        });
+    }, [setTracksEdited]);
+
+
    
     return (
         <div className='displayPlaylistsContainer'>
@@ -139,7 +166,10 @@ export default function Playlist({existingPlaylist, setExistingPlaylist, onNameC
                 onAdd={onAdd} 
                 onRemove={onRemove}
                 playlistTracks={playlistTracks}
+                allowDuplicateAdd={false}
+
             />
+    
 
             <div className='allPlaylists'>
                 {/*  Checks if playlist is an array and if there are any playlists to filter through and display */}

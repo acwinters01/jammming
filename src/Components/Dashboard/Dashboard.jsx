@@ -93,11 +93,23 @@ const Dashboard = (props) => {
             if (!Array.isArray(getTracksResponse) || getTracksResponse.length === 0) {
                 //console.log("No tracks found in the playlist.");
             };
+            let duplicationCounts = {}; // Track counts per ID
+
 
             getTracksResponse.forEach((trackInfo) => {
+                const baseId = trackInfo.track.id
                 if (trackInfo && trackInfo.track) {
+                    // Count duplicates
+                    if (!duplicationCounts[baseId]) {
+                        duplicationCounts[baseId] = 1;
+                    } else {
+                        duplicationCounts[baseId]++;
+                    }
+
+                    const count = duplicationCounts[baseId];
                     let track = {
                         id: trackInfo.track.id,
+                        uniqueKey:  `${baseId}-${count}`,
                         name: trackInfo.track.name,
                         artist: trackInfo.track.artists.map((artist) => artist.name).join(', '),
                         album: trackInfo.track.album.name,

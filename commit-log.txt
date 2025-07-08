@@ -1,0 +1,70 @@
+160a866 - acwinters01, 3 months ago : changing url to /jammming and deploying app
+d557e14 - acwinters01, 3 months ago : changing url and redeploying app
+a6e2ecb - acwinters01, 3 months ago : changing url back
+6b78dbb - acwinters01, 4 months ago : Updated API_BASE_URL
+b79f0aa - acwinters01, 4 months ago : re-building authorization code to grab information from back-end server
+9ae069b - acwinters01, 4 months ago : Seperating front-end and back-end code and updating authorization.js and server.js
+907b43f - acwinters01, 4 months ago : Add server.js
+3a46acf - acwinters01, 4 months ago : Initial commit for backend
+aee3c53 - acwinters01, 4 months ago : Inject REACT_APP_REDIRECT_URI and SPOTIFY_CLIENT_ID from GitHub Secrets
+9fcf705 - acwinters01, 4 months ago : Trigger GitHub Pages redeploy
+27f24b1 - acwinters01, 4 months ago : Adding gh-pages deployment and rebuilding
+a2222fa - acwinters01, 4 months ago : Trigger GitHub Pages redeploy
+ca38ed4 - acwinters01, 4 months ago : Force adding build folder for deployment
+69b15d7 - acwinters01, 4 months ago : Added build folder for deployment
+1a267fe - acwinters01, 4 months ago : Fixed asset paths for GitHub Pages
+a156855 - acwinters01, 4 months ago : Rebuilt and forced push of build folder
+c8dd9ea - acwinters01, 4 months ago : Fixed asset paths for GitHub Pages
+a742a05 - acwinters01, 4 months ago : Added .nojekyll to disable Jekyll
+b5fa0be - acwinters01, 4 months ago : Force GitHub Pages rebuild
+0eedbc2 - acwinters01, 4 months ago : Disable Jekyll for GitHub Pages
+af2cf81 - acwinters01, 4 months ago : Trigger GitHub Pages rebuild
+a206d2a - acwinters01, 4 months ago : Deploying updated build to GitHub Pages
+0e85824 - acwinters01, 4 months ago : Deploying updated build to GitHub Pages
+5ae6a3e - acwinters01, 4 months ago : Configured main branch for deployment
+1c26292 - acwinters01, 4 months ago : Configured main branch for deployment
+74203ef - acwinters01, 4 months ago : Configured main branch for deployment
+f7a991c - acwinters01, 4 months ago : Adding build and deploy
+01dd9b7 - acwinters01, 4 months ago : Resolved errors in package.json
+9338832 - acwinters01, 4 months ago : Resolved errors in package.json
+4605cbf - acwinters01, 4 months ago : Resolved errors in package.json
+3400f3b - acwinters01, 8 months ago : Deploy Jammming React app to jammming/deploy subdirectory
+4fa9a39 - acwinters01, 8 months ago : Deploy Jammming React app to jammming/deploy subdirectory
+4e25696 - acwinters01, 8 months ago : Deploy Jammming React app to jammming/deploy subdirectory
+ecf7f88 - acwinters01, 8 months ago : Deploy Jammming React app to jammming/deploy subdirectory
+ee3825b - acwinters01, 8 months ago : Deploy Jammming React app to jammming/deploy subdirectory
+94151bf - acwinters01, 8 months ago : Deploy Jammming React app to jammming/deploy subdirectory
+33adeda - acwinters01, 8 months ago : Deploy Jammming React app to jammming/deploy subdirectory
+0fad3d6 - acwinters01, 8 months ago : Deploy Jammming React app to jammming/deploy subdirectory
+431f892 - acwinters01, 8 months ago : Deploy Jammming React app to jammming/deploy subdirectory
+89951a2 - acwinters01, 8 months ago : Deploy Jammming React app to jammming/deploy subdirectory
+3c9e1ad - acwinters01, 8 months ago : Deploy Jammming React app to jammming/deploy subdirectory
+61fb441 - acwinters01, 8 months ago : Finalizing App
+24c3951 - acwinters01, 8 months ago : Finalizing App and cleaning directories
+aee9a07 - acwinters01, 8 months ago : Finishing Final CSS and Design
+cfebb88 - acwinters01, 8 months ago : Adding CSS to app
+1f6b33b - acwinters01, 8 months ago : Polishing App
+79bfe98 - acwinters01, 8 months ago : Fixing Broken Links
+db5b9b8 - acwinters01, 8 months ago : Updating Portfolio website
+b7c1159 - acwinters01, 9 months ago : Testing App and Authorization Component
+ee23bc6 - acwinters01, 9 months ago : Testing Dashboard Component
+80d75d7 - acwinters01, 9 months ago : Testing Playlist Component part 2
+094541a - acwinters01, 9 months ago : Testing Playlist Component part 1
+07fe66c - acwinters01, 9 months ago : Merge remote-tracking branch 'origin/main'
+6cf5296 - acwinters01, 9 months ago : Cleaning Playlist and Tracklist display
+7588a87 - acwinters01, 9 months ago : Cleaning Playlist and Tracklist display
+e38f33c - acwinters01, 9 months ago : Adding Spotify playlist sync to app functionality
+610fa5d - Lexi Winters, 9 months ago : Merge pull request #9 from acwinters01/adding-search-bar-functionality
+952ded4 - acwinters01, 9 months ago : Setup Testing and Debugging cases
+507f4ad - acwinters01, 9 months ago : Working state before package upgrades
+0abfc76 - acwinters01, 9 months ago : added search bar functionality using Spotify API
+642388a - Lexi Winters, 9 months ago : Merge pull request #8 from acwinters01/implementing-spotify-authorization-and-requests
+cfb6cdc - acwinters01, 9 months ago : Implementing user Spotify Authorization and submitting request to Spotify API
+c3e7933 - acwinters01, 9 months ago : Adding Spotify Authorization functionality
+8447da1 - acwinters01, 9 months ago : Adding rename playlist functionality, fixed bugs, separated custom playlist and new playlist code.
+bc613a8 - Lexi Winters, 9 months ago : Merge pull request #7 from acwinters01/removing-songs-from-custom-playlist
+9a53c59 - acwinters01, 9 months ago : new branch, adding playlist edit functionality, to remove and add songs
+716edc6 - acwinters01, 9 months ago : Adding adding tracks to Playlist and adding new playlist functionality
+257cf6a - acwinters01, 9 months ago : new react project jammming
+0768fe2 - acwinters01, 9 months ago : updating paths and adding a text.json file
+71124a2 - acwinters01, 9 months ago : adding new project file

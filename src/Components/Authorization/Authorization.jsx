@@ -44,6 +44,8 @@ export async function initiateAuthorization (){
     const codeChallenge = base64encode(hashed);
 
     const authURL = new URL('https://accounts.spotify.com/authorize');
+
+    console.log("Redirect URI being used:", redirectUri);
     const params = {
         response_type: 'code',
         client_id: clientId,
@@ -63,9 +65,9 @@ export async function getToken (code) {
     const codeVerifier = localStorage.getItem('code_verifier');
 
     // Debugging
-    console.log("Authorization Code:", code);
-    console.log("Code Verifier:", codeVerifier);
-    console.log("Redirect URI:", redirectUri);
+    // console.log("Authorization Code:", code);
+    // console.log("Code Verifier:", codeVerifier);
+    // console.log("Redirect URI:", redirectUri);
 
     const payload = {
         method: 'POST',
@@ -161,7 +163,8 @@ function Authorization({ onLogin, onLogout }) {
         const existingToken = localStorage.getItem('access_token');
         const tokenExpired = isTokenExpired();
 
-        console.log("Existing token on mount:", existingToken);
+        // Debugging
+        // console.log("Existing token on mount:", existingToken);
     
         const handleToken = async (token) => {
             setAccessToken(token);
@@ -192,7 +195,8 @@ function Authorization({ onLogin, onLogout }) {
             setLoading(false);
             onLogin();
 
-            console.log("Using existing token from localStorage:", existingToken);
+            // Debugging
+            // console.log("Using existing token from localStorage:", existingToken);
 
 
         // Refresh token if it's expired

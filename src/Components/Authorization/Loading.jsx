@@ -1,14 +1,15 @@
 import React from 'react';
 import '../App/App.css'
 
-const Loading = ({ isLoading }) => {
-
+const Loading = ({ isLoading = true }) => {
+    if(!isLoading) return null;
     return (
 
         <div className='modal-loading'>
             <div className='modal-overlay'>
                 <div className='modal-content'>
-                    <p>Loading...</p>
+                     <p>Loading...</p>
+                    
                 </div>
             </div>
         </div>     

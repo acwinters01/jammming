@@ -20,17 +20,26 @@
     }
 
     .trackText h4 {
-        font-size: 1.25rem;
+        font-size: 1.75rem;
     }
 
     .trackText p#artist {
-        font-size: 1rem;
+        font-size: 1.25rem;
     }
 
     .trackText p#album {
         margin-top: .25rem;
-        font-size: .75rem;
+        font-size: 1rem;
     }
+
+    .playlistTitleInfo p {
+        font-size: 1.25rem;
+    }
+
+    .playlistText h4 {
+        font-size: 2rem;
+    }
+
 }
 
 /* For Smaller Screens where the columns don't 
@@ -98,7 +107,6 @@ fit with tracks and playlists */
         border-bottom-right-radius: 0px;
     }
 
-
     /* Editing Playlist UI */
     .editingSection {
         min-width: 50%;
@@ -129,7 +137,8 @@ fit with tracks and playlists */
         justify-content: center;
         align-items: stretch;
         margin: 0 auto;
-        width: 70%;
+        margin-left: 5rem;
+        width: 75%;
 
      }
       .dashboard-open .PlaylistsContainer,  .dashboard-open .search {
@@ -166,32 +175,23 @@ fit with tracks and playlists */
 }
 
 /* The smallest of screens */
-@media only screen and (max-width: 931px) {
+@media only screen and (max-width: 1000px) {
 
     /* Main Menu */
     .appStart {
         display: flex;
-        flex-direction: column;
+        /* flex-direction: column; */
         justify-content: center;
         align-items: stretch;
         margin: 0 auto;
         width: 100%;
-        transform: translateX(100px);
+        transform: translateX(0);
+
     }
 
     .search, .PlaylistsContainer {
-        max-width: 70%;
-        margin: 0;
-  
-    }
-
-    .PlaylistsContainer {
-        background-color: #B4ADEA;
-    }
-
-    .search {
-        border-top: 5px solid #1E1B18;
-        align-self: stretch;
+        margin: 0 auto;
+        max-width: 45%;
     }
 
     .AppContainer.editing-active .search {
@@ -203,7 +203,19 @@ fit with tracks and playlists */
     }
 
     .playlistNameInput {
-        justify-content: center;
+        justify-content: flex-start;
+    }
+
+   .trackText h4 {
+        font-size: 1.45rem;
+    }
+
+    .trackText p#artist {
+        font-size: 1.2rem;
+    }
+
+    .trackText p#album {
+        font-size: 1rem;
     }
 
     /*  Dashboard Open */
@@ -214,6 +226,10 @@ fit with tracks and playlists */
 
     .AppContainer.dashboard-open .mainAppTitle h1 {
         transform: translateX(-155px);
+    }
+
+    .dashboard-open #title {
+        min-width: 15rem;
     }
 
 
@@ -285,7 +301,7 @@ fit with tracks and playlists */
 }
 
 /* The smallest of screens */
-@media only screen and (max-width: 581px) {
+@media only screen and (max-width: 830px) {
     /* Main Menu */
     .appStart {
         display: flex;
@@ -293,7 +309,67 @@ fit with tracks and playlists */
         justify-content: center;
         align-items: stretch;
         width: 100%;
-        transform: translateX(75px);
+        margin: 0 auto;
+        transform: translateX(0);
     }
 
+    .trackText h4, .playlistText h4 {
+        font-size: 2rem;
+    }
+
+    .trackText p#artist {
+        font-size: 1.5rem;
+    }
+
+    .trackText p#album {
+        font-size: 1rem;
+    }
+
+    .playlistTitleInfo p {
+        font-size: 1.25rem;
+    }
+
+
+    .AppContainer.dashboard-open .mainAppTitle h1 {
+        transform: translateX(0);
+    }
+   
+    #title {
+        min-width: 5rem;
+    }
+
+    .search, .PlaylistsContainer {
+        margin: 0 auto;
+        width: 40rem;
+        min-width: 80%;
+    }
+
+      .PlaylistsContainer {
+        background-color: #B4ADEA;
+        margin-bottom: .5rem;
+
+    }
+}
+
+/* The mobile screens */
+@media only screen and (max-width: 500px) {
+    .playlistSectionOne {
+        flex-wrap: nowrap;
+    }
+
+    .trackText h4, .playlistText h4 {
+        font-size: 1.25rem;
+    }
+
+    .trackText p#artist {
+        font-size: 1rem;
+    }
+
+    .trackText p#album {
+        font-size: .75rem;
+    }
+
+    .playlistTitleInfo p {
+        font-size: 1rem;
+    }
 }

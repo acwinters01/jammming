@@ -3,7 +3,7 @@ import Track from '../Track/Track';
 import PagesSetUp from '../Playlist/PagesSetUp';
 
 
-const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, playlistTracks = [], tracksEdited = [], keyPrefix = '' }) => {
+const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, playlistTracks = [], tracksEdited = [], keyPrefix = '', allowDuplicateAdd = false, handleAddingDuplicateTracks }) => {
     // Add these logs at the start of TrackList to verify props received
     // console.log('Tracks Edited: ', tracksEdited)
     // console.log('Tracks: ', tracks)
@@ -11,6 +11,7 @@ const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, playlistTracks 
     const startIndex = currentPage * tracksPerPage;
     const endIndex = startIndex + tracksPerPage;
     const currentTracks = tracks.slice(startIndex, endIndex);
+    
     // console.log(currentTracks)
     
     useEffect(() => {
@@ -31,12 +32,16 @@ const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, playlistTracks 
         return;
     };
 
+
     // Selects playlist track by id
     const isSelected = (track) => {
-        const inPlaylist = Array.isArray(playlistTracks) && playlistTracks.some((playlistTrack) => playlistTrack.id === track.id);
-        // const inEdited = Array.isArray(tracksEdited) && tracksEdited.some((editedTrack) => editedTrack.id === track.id);
-        return inPlaylist;
-    }
+    // if (allowDuplicateAdd) return false;
+      return !allowDuplicateAdd && playlistTracks.some(t => t.uniqueKey === track.uniqueKey);
+
+    //  return playlistTracks.some(
+    //     (playlistTrack) => playlistTrack.uniqueKey === track.uniqueKey
+    // );
+  };
     
     
     // Pagination controls
@@ -62,7 +67,7 @@ const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, playlistTracks 
                 currentTracks.map((track) => (
                     <Track
                         key={`${keyPrefix}${track.uniqueKey ? track.uniqueKey : track.id}`}
-                        uniqueKey={track.uniqueKey || `${track.id}-1`}
+                        uniqueKey={track.uniqueKey}
                         id={track.id}  // Pass id as a normal prop
                         name={track.name}
                         artist={track.album?.artists ? track.album.artists.map(artist => artist.name).join(', ') : track.artist}
@@ -72,6 +77,7 @@ const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, playlistTracks 
                         onAdd={onAdd}
                         onRemove={onRemove}
                         isSelected={isSelected}
+
                
                     />
                 ))

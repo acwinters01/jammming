@@ -27,9 +27,7 @@
                 const mainWidth = mainRef.current.offsetWidth;
                 if(mainWidth < 932) {
                     if (editingSearchRef.current && editingSectionRef.current) {
-                        const height = editingSearchRef.current.offsetHeight;
-                        console.log("Height of .editingSearch:", height); // Debugging
-            
+                        const height = editingSearchRef.current.offsetHeight;            
                         if (height > 200) {
                             editingSectionRef.current.classList.add('large-height');
                         } else {
@@ -136,14 +134,15 @@
 
         const addTracksEditingPlaylist = useCallback(
             (track) => {
-
-                if (props.tracksEdited.some((savedTrack) => savedTrack.id === track.id)) {
+                const baseKey = track.id;
+                const trackExists = props.tracksEdited.some((savedTrack)=> savedTrack.id === baseKey)
+                if (trackExists) {
                     setDuplicateTrack(track);
                     setIsDuplicateModalVisible(true);
                     return;
                 }
-
-                 props.setTracksEdited((prevTracks) => [{ ...track, uniqueKey: `${track.id}-1` }, ...prevTracks]);
+                const trackWithKey = { ...track, uniqueKey: `${baseKey}-1`}
+                 props.setTracksEdited((prevTracks) => [ trackWithKey, ...prevTracks]);
             },
             [props.tracksEdited, props.setTracksEdited]
         );
@@ -181,10 +180,13 @@
                             {/* TrackList for the current playlist */}
                             <TrackList
                                 key={props.selectedPlaylist + 1}
+                                keyPrefix='editing-'
                                 tracks={props.tracksEdited}
                                 onAdd={addTracksEditingPlaylist}
                                 onRemove={(track) => props.setTracksEdited((prev) => prev.filter((t) => t.uniqueKey !== track.uniqueKey))}
                                 playlistTracks={props.tracksEdited}
+                                tracksEdited={props.tracksEdited}
+                                allowDuplicateAdd={false}
                             />
 
                             <DuplicateTrackModal
@@ -205,10 +207,13 @@
                         {/* Display search results in a TrackList */}
                         <SearchResults
                             tracks={searchResults}
+                            keyPrefix='editing-'
                             onAdd={addTracksEditingPlaylist}
                             onRemove={(track) => props.setTracksEdited((prev) => prev.filter((t) => t.uniqueKey !== track.uniqueKey))}
                             tracksEdited={props.tracksEdited}
                             selectedPlaylist={props.selectedPlaylist}
+                            playlistTracks={props.trackEdited}
+                            allowDuplicateAdd={false}
                         />
                     </div>
                 </div>

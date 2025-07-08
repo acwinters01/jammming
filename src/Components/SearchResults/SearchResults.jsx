@@ -3,7 +3,7 @@ import TrackList from '../Tracklist/Tracklist';
 
 
 
-const SearchResults = ({ tracks, onAdd, onRemove, playlistTracks}) => {
+const SearchResults = ({ tracks, onAdd, onRemove, playlistTracks, tracksEdited, keyPrefix, allowDuplicateAdd}) => {
 
     // If there are no search results
     if (!tracks || tracks.length === 0) {
@@ -14,11 +14,13 @@ const SearchResults = ({ tracks, onAdd, onRemove, playlistTracks}) => {
         <div className='displaySearchResults'>
             {/* Add pagination controls to Search Results */}
             <TrackList 
-                keyPrefix='search-'
+                keyPrefix={keyPrefix}
                 tracks={tracks}
                 onAdd={onAdd}
                 onRemove={onRemove}
                 playlistTracks={playlistTracks}
+                tracksEdited={tracksEdited}
+                allowDuplicateAdd={true}
             />
         </div>
     )
