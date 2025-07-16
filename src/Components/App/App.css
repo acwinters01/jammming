@@ -53,6 +53,53 @@ body::after{
     width: 3.25rem;
 }
 
+/* Need Authorization */
+.displayAuthorization  {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    top: 8rem;
+
+}
+
+.needAuthorization {
+    display: flex;
+    background-color: #B4ADEA;
+    padding: 1rem;
+    border-radius: .75rem;
+    flex-direction: column;
+    align-items: center;
+    width: 25%;
+    margin: 0 auto;
+}
+
+.needAuthorization h1{
+    color: black;
+    font-weight: 600;;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.needAuthorization button {
+    font-size: 1rem;
+    padding: .5rem;
+    border-radius: .5rem;
+    border-style: none;
+}
+
+.needAuthorization button:hover {
+    background-color: #D8315B;
+    border-style: none;
+    color: white;
+    font-weight: 500;
+}
+
+
+#logOut .displayAuthorization {
+    top: 0rem;
+    display: flex;
+    justify-content: space-around;
+}
 
 
 /* Loading Screen */ 
@@ -99,7 +146,16 @@ body::after{
 }
 
 .authorizationContainer {
-    margin: 0rem 1rem;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+}
+
+#title-spacer {
+    position: relative;
+    height: 5rem;
+    top: 3rem;
+    
 }
 
 .displayAuthorization h2 {
@@ -109,6 +165,8 @@ body::after{
 
 .displayAuthorization .loggedIn {
    display: flex;
+   width: 100%;
+   margin: 0 2rem;
    justify-content: space-between;
    margin-bottom: 1rem;
 }
@@ -340,9 +398,6 @@ body::after{
     justify-content: center;
 }
 
-.AppContainer.editing-active .main {
-    margin-top: 3rem;
-}
 
 #title {
     font-size: 1.5rem;
@@ -363,6 +418,7 @@ body::after{
 
 .pagination p { 
     margin: 0rem .5rem;
+    color: black;
 }
 
 .pagination button {
@@ -598,6 +654,16 @@ input {
 
 
 /* Editing Playlist */
+
+.EditingPlaylist {
+    margin: 1rem;
+    margin-top: 2.5rem;
+}
+
+/* .EditingPlaylist .displayTrackList {
+    
+} */
+
 .editPlaylistContainer {
     position: fixed;
     top: 0;
@@ -660,6 +726,7 @@ input {
     margin: 2rem 1rem 2rem 0rem;
     background-color: #B4ADEA;
     height: calc(100vh + 45%);
+    overflow-y: scroll;
 }
 
 .editingButtons {

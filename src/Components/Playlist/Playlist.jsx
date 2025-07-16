@@ -167,6 +167,7 @@ export default function Playlist({existingPlaylist, setExistingPlaylist, onNameC
                 onRemove={onRemove}
                 playlistTracks={playlistTracks}
                 allowDuplicateAdd={false}
+                tracksPerPage={5}
 
             />
     

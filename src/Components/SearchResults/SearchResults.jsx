@@ -3,7 +3,7 @@ import TrackList from '../Tracklist/Tracklist';
 
 
 
-const SearchResults = ({ tracks, onAdd, onRemove, playlistTracks, tracksEdited, keyPrefix, allowDuplicateAdd}) => {
+const SearchResults = ({ tracks, onAdd, onRemove, playlistTracks, tracksEdited, keyPrefix, tracksPerPage, allowDuplicateAdd}) => {
 
     // If there are no search results
     if (!tracks || tracks.length === 0) {
@@ -21,6 +21,7 @@ const SearchResults = ({ tracks, onAdd, onRemove, playlistTracks, tracksEdited, 
                 playlistTracks={playlistTracks}
                 tracksEdited={tracksEdited}
                 allowDuplicateAdd={true}
+                tracksPerPage={tracksPerPage}
             />
         </div>
     )

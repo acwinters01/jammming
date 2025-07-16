@@ -60,8 +60,6 @@ const Dashboard = (props) => {
         }
     };
 
-
-
     const handlePlaylistSync = useCallback(async (playlist) => {
         let prevPlaylistTracks = [];
 
@@ -150,8 +148,7 @@ const Dashboard = (props) => {
     }, [props]);
 
     return (
-        <div className='displayDashboard'>
-           
+        <div className='displayDashboard'>    
             {isLoading ? (
                 <div className='dashboardLoading'>
                     <p>Loading...</p>

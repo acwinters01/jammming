@@ -204,10 +204,10 @@ function App() {
           <div className='authorizationContainer' id="logOut">
             <Authorization onLogin={handleLogin} onLogout={handleLogout}/>
           </div>
-          
+          <div className='spacer'id='title-spacer'></div>
+
           <div className='main'>
             <div className='appStart'>
-
               <div className='PlaylistsContainer'>
                 <div className='playlistTitle'>
                   <h2 id='title'>Playlists</h2>
@@ -248,12 +248,16 @@ function App() {
 
           </div>
 
-          {/* Dashboard Toggle Button */}
+          {/* Dashboard Toggle Button
           <button className="dashboardToggle" onClick={toggleDashboard} disabled={isEditing}>
             {dashboardOpen ? '>' : '<'}
-          </button>
+          </button> */}
           {/* Dashboard Component */}
           <div className={`dashboardContainer ${dashboardOpen ? 'open' : ''}`}>
+                {/* Dashboard Toggle Button */}
+            <button className="dashboardToggle" onClick={toggleDashboard} disabled={isEditing}>
+              {dashboardOpen ? '>' : '<'}
+            </button>
             <Dashboard
               setExistingPlaylist={setExistingPlaylist}
               existingPlaylist={existingPlaylist}

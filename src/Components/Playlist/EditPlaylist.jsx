@@ -15,7 +15,7 @@
         const [playlistName, setPlaylistName] = useState(selectedPlaylistObj ? selectedPlaylistObj.playlistName : '');
         const [searchResults, setSearchResults] = useState([]); 
         const [trackCurrentPage, setTrackCurrentPage] = useState(0);
-        const tracksPerTrackPage = 5; // Adjust as needed for display
+        const tracksPerTrackPage = 10; // Adjust as needed for display
         const [trackDuplicationCounts, setTrackDuplicationCounts] = useState({});
         const editingSearchRef = useRef(null);
         const editingSectionRef = useRef(null);
@@ -154,6 +154,8 @@
 
         return (
             <div className='displayEditingPlaylist' ref={mainRef}>
+                {/* Extra div for space */}
+                <div className='spacer'></div>
                 {/* Creates a Div for Editing Playlists */}
                 <div className='editingSection' ref={editingSectionRef}>
                     {props.selectedPlaylist !== null && (
@@ -186,6 +188,7 @@
                                 onRemove={(track) => props.setTracksEdited((prev) => prev.filter((t) => t.uniqueKey !== track.uniqueKey))}
                                 playlistTracks={props.tracksEdited}
                                 tracksEdited={props.tracksEdited}
+                                tracksPerPage={10}
                                 allowDuplicateAdd={false}
                             />
 
@@ -214,6 +217,7 @@
                             selectedPlaylist={props.selectedPlaylist}
                             playlistTracks={props.trackEdited}
                             allowDuplicateAdd={false}
+                            tracksPerPage={10}
                         />
                     </div>
                 </div>

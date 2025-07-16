@@ -177,6 +177,12 @@ fit with tracks and playlists */
 /* The smallest of screens */
 @media only screen and (max-width: 1000px) {
 
+    .mainAppTitle {
+        position: sticky;
+        top: 0%;
+        background-color: #161514;    
+    }
+
     /* Main Menu */
     .appStart {
         display: flex;
@@ -189,6 +195,11 @@ fit with tracks and playlists */
 
     }
 
+    #title-spacer {
+        height: 0;
+    }
+
+   
     .search, .PlaylistsContainer {
         margin: 0 auto;
         max-width: 45%;
@@ -235,24 +246,40 @@ fit with tracks and playlists */
 
     /* Editing Playlist */
     .AppContainer.editing-active .displayAuthorization .loggedIn {
-        background-color: #1E1B18;
+        background-color: #161514;
         width: 100%;
         margin: 0; 
+        justify-content: space-between;
     }
 
     .AppContainer.editing-active .authorizationContainer {
+        position: sticky;
+        display: flex;
+        background-color: #161514;
+        width: 100%;
         margin: 0;
+        top: 5em !important;
     }
+
+     .AppContainer .authorizationContainer {
+        position: sticky;
+        display: flex;
+        background-color: #161514;
+        width: 100%;
+        margin: 0;
+        top: 5em !important;
+    }
+
 
     .AppContainer.editing-active .displayEditingPlaylist {
         display: flex;
-        flex-direction: column-reverse;
         justify-content: center;
-        height: auto;
+        height: 100vh;
         width: 100%;
         padding: 0;
         margin: 0 auto;
         overflow-y: auto;
+        top: 0rem;
     }
 
     .editingSection, .editingSearch {
@@ -263,29 +290,23 @@ fit with tracks and playlists */
     }
 
     .editingSection {
-        border-top: 10px solid #1E1B18;
-        margin-bottom: 30rem;
-        padding-top: 1rem;
+        border: .15px solid #1E1B18;
     }
 
-    .AppContainer.editing-active .large-height {
-        margin-bottom: 86rem; /* Adjust as needed for taller element */
-    }
+    /* .AppContainer.editing-active .large-height {
+        margin-bottom: 86rem; /* Adjust as needed for taller element } */
 
     .editingSearch {
-        border-bottom: 1rem solid #1E1B18;
-        margin-top: 11rem;
+        border: .15rem solid #1E1B18;
     }
 
     .AppContainer.editing-active .editingMainContainer {
-        position: fixed;
-        top: 15.55%;
-        right: 0;
-        left: 0;
-        z-index: 1000;
         background-color: #B4ADEA;
-        border-bottom: 2px solid #1E1B18;
-        box-shadow: 0px 3px 5px #1E1B18;
+
+    }
+
+    .AppContainer.editing-active .displayTracklist {
+        width: 50%;
     }
 
     .AppContainer.editing-active .searchWithRecentContainer {
@@ -313,23 +334,6 @@ fit with tracks and playlists */
         transform: translateX(0);
     }
 
-    .trackText h4, .playlistText h4 {
-        font-size: 2rem;
-    }
-
-    .trackText p#artist {
-        font-size: 1.5rem;
-    }
-
-    .trackText p#album {
-        font-size: 1rem;
-    }
-
-    .playlistTitleInfo p {
-        font-size: 1.25rem;
-    }
-
-
     .AppContainer.dashboard-open .mainAppTitle h1 {
         transform: translateX(0);
     }
@@ -349,10 +353,86 @@ fit with tracks and playlists */
         margin-bottom: .5rem;
 
     }
+
+    .trackText h4, .playlistText h4 {
+        font-size: 2rem;
+    }
+
+    .trackText p#artist {
+        font-size: 1.5rem;
+    }
+
+    .trackText p#album {
+        font-size: 1rem;
+    }
+
+    .playlistTitleInfo p {
+        font-size: 1.25rem;
+    }
+
+    /* Editing Playlist */
+    .AppContainer.editing-active .displayEditingPlaylist {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100vh;
+        width: 100%;
+        padding: 0;
+        margin: 0 auto;
+        overflow-y: auto;
+        top: 0rem;
+    }
+}
+
+@media only screen and (max-width: 580px) {
+    .loggedIn h2 {
+        display: none;
+    }
+
+    .AppContainer.dashboard-open .displayAuthorization .loggedIn button {
+        transform: translateX(0)
+     }
+
 }
 
 /* The mobile screens */
 @media only screen and (max-width: 500px) {
+
+    /* .spacer {
+    } */
+
+    .dashboardContainer.open .pagination p {
+        font-size: .85rem;
+        color: black;
+    }
+
+    #dashboardText p {
+        font-size: 1.15rem;
+    }
+
+    .dashboardPlaylist .playlistText {
+        position: relative;
+        left: -.5rem;
+        z-index: 2;
+        top: 0;
+    }
+
+    .dashboardContainer {
+        width: 200px;
+    }
+
+    .dashboardProfileImage img {
+        width: 100%;
+    }
+
+    .usersPlaylist-TitleContainer h3 {
+        font-size: 1rem;
+    }
+
+    .AppContainer.dashboard-open .dashboardToggle { 
+        right: 14.5rem;
+    }
+
     .playlistSectionOne {
         flex-wrap: nowrap;
     }
@@ -372,4 +452,36 @@ fit with tracks and playlists */
     .playlistTitleInfo p {
         font-size: 1rem;
     }
+
+    .AppContainer.editing-active .editingMainContainer {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+    }
+    .editingSearch h3, .editingSearch .displaySearchBar {
+        position: sticky;
+        top:0%;
+        z-index: 3;
+    }
 }
+/* 
+@media only screen and (max-width: 375px) {
+    .dashboardToggle:hover {
+        pointer-events: none;
+    }
+
+    .mainAppTitle {
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+
+    #logOut .displayAuthorization {
+        position: fixed;
+        top: 5em;
+        z-index: 1;
+        background-color: #161514;
+        width: 100%;
+    }
+
+} */
