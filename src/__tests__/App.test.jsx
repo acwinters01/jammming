@@ -24,6 +24,8 @@ jest.mock('../Components/Authorization/Loading', () => ({ isLoading }) =>
 );
 
 describe('App Component', () => {
+
+    
     beforeEach(() => {
         // Mock tokens
         localStorage.setItem('access_token', 'mock_token');
@@ -45,6 +47,8 @@ describe('App Component', () => {
         await waitFor(() => {
             expect(screen.getByText('Loading...')).toBeInTheDocument();
 
-        })
-    }) 
+        });
+    });
+
+    
 });

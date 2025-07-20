@@ -77,6 +77,7 @@ const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, playlistTracks 
                         onAdd={onAdd}
                         onRemove={onRemove}
                         isSelected={isSelected}
+                        keyPrefix={keyPrefix}
 
                
                     />

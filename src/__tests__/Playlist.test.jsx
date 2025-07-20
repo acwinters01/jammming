@@ -51,6 +51,7 @@ const defaultProps = {
 
 describe('Playlist Component', () => {
     it('renders input and save button', () => {
+
         render(<Playlist {...defaultProps} />);
         expect(screen.getAllByPlaceholderText('New Playlist').length).toBeGreaterThan(0);
         expect(screen.getByText('Save')).toBeInTheDocument();
@@ -73,8 +74,7 @@ describe('Playlist Component', () => {
         expect(defaultProps.setShowModal).toHaveBeenCalled();
     });
 
-
-    it('class makeSpotify Request when transferring a playlist', async () => {
+    it('class makeSpotify Request when transferring a playlist to Spotify', async () => {
         makeSpotifyRequest.mockResolvedValueOnce({ id: 'mock-playlist-id' }); // creates id for created playlist
         makeSpotifyRequest.mockResolvedValueOnce({}); // add tracks here
 

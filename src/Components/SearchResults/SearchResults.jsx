@@ -14,7 +14,7 @@ const SearchResults = ({ tracks, onAdd, onRemove, playlistTracks, tracksEdited, 
         <div className='displaySearchResults'>
             {/* Add pagination controls to Search Results */}
             <TrackList 
-                keyPrefix={keyPrefix}
+                keyPrefix={'search'}
                 tracks={tracks}
                 onAdd={onAdd}
                 onRemove={onRemove}

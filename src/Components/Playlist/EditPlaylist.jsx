@@ -182,7 +182,7 @@
                             {/* TrackList for the current playlist */}
                             <TrackList
                                 key={props.selectedPlaylist + 1}
-                                keyPrefix='editing-'
+                                keyPrefix='editing'
                                 tracks={props.tracksEdited}
                                 onAdd={addTracksEditingPlaylist}
                                 onRemove={(track) => props.setTracksEdited((prev) => prev.filter((t) => t.uniqueKey !== track.uniqueKey))}

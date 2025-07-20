@@ -4,7 +4,6 @@ import userEvent from "@testing-library/user-event";
 import DuplicateTrackModal from "../Components/Track/DuplicateTrackModal";
 import EditingPlaylist from "../Components/Playlist/EditPlaylist";
 import SearchResults from '../Components/SearchResults/SearchResults';
-import SearchBar from '../Components/SearchBar/SearchBar';
 
 
 
@@ -49,6 +48,7 @@ const searchTracks = [
             onAdd: jest.fn(),
             onRemove: jest.fn(),
             isSelected: true,
+            keyPrefix: 'search'
 
         }, 
         {
@@ -62,6 +62,7 @@ const searchTracks = [
             onAdd: jest.fn(),
             onRemove: jest.fn(),
             isSelected: false,
+            keyPrefix: 'search'
 
         },
         {
@@ -75,10 +76,10 @@ const searchTracks = [
             onAdd: jest.fn(),
             onRemove: jest.fn(),
             isSelected: false,
+            keyPrefix: 'search'
 
         }
 ]
-
 
 const testPlaylist = [
     {
@@ -87,7 +88,6 @@ const testPlaylist = [
         tracks: tracks,
     },
 ];
-
 
 const defaultEditingPlaylistProps = {
     existingPlaylist: testPlaylist,
@@ -110,82 +110,82 @@ const searchProps = {
     playlistTracks: testPlaylist[0].tracks
 }
 
-
+const duplicateTrackModalProps = {
+    track: searchTracks[0],
+    onConfirm: jest.fn(),
+    onCancel: jest.fn(),
+}
 
 
 describe('Duplicate Track Modal Component', () => {
+    const jestConsole = console;
+
+    beforeEach(() => {
+        global.console = require('console');
+    });
+
+    afterEach(() => {
+        global.console = jestConsole;
+    });
+
+
     it('modal pops up when user attempts to add same track', () => {
-        render(<EditingPlaylist {...defaultEditingPlaylistProps} />);
-        render(<SearchResults {...searchProps}/>)
-        console.log(searchProps)
+        // SET UP //
+        const editingModalResult = render(<EditingPlaylist {...defaultEditingPlaylistProps} />);
+        editingModalResult.container.querySelector('.displayEditingPlaylist');
+        const searchResults = render(<SearchResults {...searchProps}/>)
+        searchResults.container.querySelector('.displaySearchResults');
+
+        // Check for track to add
         expect(screen.getByText('SearchTrack-1')).toBeInTheDocument();
+        const searchAddButton = screen.getByTestId('search-1');
+
+        fireEvent.click(searchAddButton);
+        render(<DuplicateTrackModal {...duplicateTrackModalProps}/>)
+      
         
-        
-        // render(<TrackList {...defaultTrackListProps} />);
-        // fireEvent.click(screen.getByTestId('track-1'));
-        // expect(screen.getByText('Do you want to add it again?')).toBeInTheDocument();
+    });
+
+    it('add again button is clickable', () => {
+
+        // SET UP
+        const editingModalResult = render(<EditingPlaylist {...defaultEditingPlaylistProps} />);
+        editingModalResult.container.querySelector('.displayEditingPlaylist');
+        const searchResults = render(<SearchResults {...searchProps}/>);
+        searchResults.container.querySelector('.displaySearchResults');
+        screen.getByTestId('search-1');
+
+        // Check if Componenet Renders
+        render(<DuplicateTrackModal {...duplicateTrackModalProps}/>);
+        expect(screen.getByText('Do you want to add it again?')).toBeInTheDocument();
+
+        // Check if Add Button is found and clickable
+        const buttonEnabled = screen.getByRole('button', {name: 'Add Again'});
+        expect(buttonEnabled).toBeInTheDocument();
+        expect(buttonEnabled).toBeEnabled();
+
+
+    });
+
+    it('cancel button is clickable', async() => {
+
+        // SET UP
+        const editingModalResult = render(<EditingPlaylist {...defaultEditingPlaylistProps} />);
+        editingModalResult.container.querySelector('.displayEditingPlaylist');
+        const searchResults = render(<SearchResults {...searchProps}/>);
+        searchResults.container.querySelector('.displaySearchResults');
+        screen.getByTestId('search-1');
+
+        // Check if Componenet Renders
+        const duplicateModal = render(<DuplicateTrackModal {...duplicateTrackModalProps}/>);
+        expect(screen.getByText('Do you want to add it again?')).toBeInTheDocument();
+
+        // Check if Cancel button is found and clickable
+        await waitFor(() => {
+            const modalButtons = duplicateModal.container.querySelector('.modal-buttons');
+            expect(modalButtons).toBeInTheDocument();
+             expect(modalButtons).toBeEnabled();
+        });        
+       
     });
 })
-
-
-
-const defaultTrackListProps = {
-    tracks: [
-        {
-            uniqueKey: '',
-            id: '1',
-            name: 'Track',
-            album: 'Test Album',
-            artist: 'Test Artist',
-            imageUri: '/test.jpg',
-            uri: '/testURI.jpg', 
-            onAdd: jest.fn(),
-            onRemove: jest.fn(),
-            isSelected: true,
-
-        }, 
-        {
-            uniqueKey: '',
-            id: '2',
-            name: 'Track-2',
-            album: 'Test Album-2',
-            artist: 'Test Artist-2',
-            imageUri: '/test2.jpg',
-            uri: '/testURI2.jpg', 
-            onAdd: jest.fn(),
-            onRemove: jest.fn(),
-            isSelected: false,
-
-        }],
-    tracksPerPage: 5,
-    onAdd: jest.fn(),
-    onRemove: jest.fn(),
-    playlistTracks: testPlaylist
-};
-
-const testTrack = {
-    uniqueKey: '000-Track',
-    id: '1',
-    name: 'Track', 
-    artist: '',
-    album: "Album Name",
-    uri: '/track.jpg',
-    imageUri: '/test.jpg',
-    onAdd: jest.fn(),
-    onRemove: jest.fn(),
-    isSelected: true,
-}
-
-const defaultTrackProps = {
-    uniqueKey: '',
-    id: '1',
-    name: 'Track',
-    album: 'Test Album',
-    artist: 'Test Artist',
-    imageUri: '/test.jpg',
-    uri: '/testURI.jpg', 
-    onAdd: jest.fn(),
-    onRemove: jest.fn(),
-    isSelected: true,
-
-}
