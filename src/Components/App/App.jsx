@@ -90,8 +90,6 @@ function App() {
     setSearchResults(results || []);
   };
 
-  
-
   // Updates Playlist name
   const updatePlaylistName = useCallback((newName, playlistIndex) => {
 
@@ -132,7 +130,7 @@ function App() {
       setShowPlaylistModal(true);
       return;
     }
-
+    // Creating a playlistId for local playlist
     const generateLocalId = () => `local-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
 
@@ -248,10 +246,6 @@ function App() {
 
           </div>
 
-          {/* Dashboard Toggle Button
-          <button className="dashboardToggle" onClick={toggleDashboard} disabled={isEditing}>
-            {dashboardOpen ? '>' : '<'}
-          </button> */}
           {/* Dashboard Component */}
           <div className={`dashboardContainer ${dashboardOpen ? 'open' : ''}`}>
                 {/* Dashboard Toggle Button */}

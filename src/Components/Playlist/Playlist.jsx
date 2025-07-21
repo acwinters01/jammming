@@ -65,7 +65,7 @@ export default function Playlist({existingPlaylist, setExistingPlaylist, onNameC
     const handlePlaylistRemove = (playlist_id) => {
         try {
             setExistingPlaylist((prev) => {
-                 return prev.filter((playlistToRemove) => playlistToRemove.playlistId !== playlist_id)
+                return prev.filter((playlistToRemove) => playlistToRemove.playlistId !== playlist_id)
             })
 
         } catch (error) {
@@ -123,28 +123,28 @@ export default function Playlist({existingPlaylist, setExistingPlaylist, onNameC
         }
     };
 
-    const handleAddingDuplicateTracks = useCallback((track) => {
-        const baseKey = track.id;
+    // const handleAddingDuplicateTracks = useCallback((track) => {
+    //     const baseKey = track.id;
 
-        setTrackDuplicationCounts(prevCounts => {
-            const newCounts = { ...prevCounts };
-            newCounts[baseKey] = (newCounts[baseKey] || 1) + 1;
+    //     setTrackDuplicationCounts(prevCounts => {
+    //         const newCounts = { ...prevCounts };
+    //         newCounts[baseKey] = (newCounts[baseKey] || 1) + 1;
 
-            const uniqueKey = `${baseKey}-${newCounts[baseKey]}`;
+    //         const uniqueKey = `${baseKey}-${newCounts[baseKey]}`;
 
-            const trackWithUniqueKey = {
-                ...track,
-                uniqueKey: uniqueKey
-            };
+    //         const trackWithUniqueKey = {
+    //             ...track,
+    //             uniqueKey: uniqueKey
+    //         };
 
-            setTracksEdited(prevTracks => {
-                if (prevTracks.some(t => t.uniqueKey === uniqueKey)) return prevTracks;
-                return [trackWithUniqueKey, ...prevTracks];
-            });
+    //         setTracksEdited(prevTracks => {
+    //             if (prevTracks.some(t => t.uniqueKey === uniqueKey)) return prevTracks;
+    //             return [trackWithUniqueKey, ...prevTracks];
+    //         });
 
-            return newCounts; 
-        });
-    }, [setTracksEdited]);
+    //         return newCounts; 
+    //     });
+    // }, [setTracksEdited]);
 
 
    
@@ -152,6 +152,7 @@ export default function Playlist({existingPlaylist, setExistingPlaylist, onNameC
         <div className='displayPlaylistsContainer'>
             <div className='playlistNameInput'>
                 <input 
+                    data-testid="playlist-name-input"
                     onChange={handleNewPlaylistNameChange} 
                     value={playlistName}
                     placeholder="New Playlist"
@@ -161,7 +162,7 @@ export default function Playlist({existingPlaylist, setExistingPlaylist, onNameC
             </div>
 
             <TrackList
-                keyPrefix='playlist-'
+                keyPrefix='playlist'
                 tracks={playlistTracks}
                 onAdd={onAdd} 
                 onRemove={onRemove}

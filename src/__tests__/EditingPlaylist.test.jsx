@@ -206,13 +206,10 @@ describe('Editing Playlist Component', () => {
 
     it('removes tracks from editing playlist', () => {
         render(<RemovingTrackWrapper/>)
-
         expect(screen.getByText('Track')).toBeInTheDocument();
 
         fireEvent.click(screen.getByTestId("editing-1"));
         expect(screen.queryByText('Track')).not.toBeInTheDocument();
       
-
-
     });
 });

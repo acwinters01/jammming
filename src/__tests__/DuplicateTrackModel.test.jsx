@@ -170,11 +170,9 @@ describe('Duplicate Track Modal Component', () => {
     it('cancel button is clickable', async() => {
 
         // SET UP
-        const editingModalResult = render(<EditingPlaylist {...defaultEditingPlaylistProps} />);
-        editingModalResult.container.querySelector('.displayEditingPlaylist');
+        render(<EditingPlaylist {...defaultEditingPlaylistProps} />);
         const searchResults = render(<SearchResults {...searchProps}/>);
         searchResults.container.querySelector('.displaySearchResults');
-        screen.getByTestId('search-1');
 
         // Check if Componenet Renders
         const duplicateModal = render(<DuplicateTrackModal {...duplicateTrackModalProps}/>);
@@ -184,7 +182,7 @@ describe('Duplicate Track Modal Component', () => {
         await waitFor(() => {
             const modalButtons = duplicateModal.container.querySelector('.modal-buttons');
             expect(modalButtons).toBeInTheDocument();
-             expect(modalButtons).toBeEnabled();
+            expect(modalButtons).toBeEnabled();
         });        
        
     });
