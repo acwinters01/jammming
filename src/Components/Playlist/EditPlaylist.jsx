@@ -21,11 +21,11 @@
         const selectedPlaylistObj = existingPlaylist[selectedPlaylist];
         const [isEditingName, setIsEditingName] = useState(false);
         const [ duplicateTrack, setDuplicateTrack ] = useState(null);
-        const [isDuplicateModalVisible, setIsDuplicateModalVisible] = useState(false);
+        let setIsDuplicateModalVisible = false;
         const [playlistName, setPlaylistName] = useState(selectedPlaylistObj ? selectedPlaylistObj.playlistName : '');
         const [searchResults, setSearchResults] = useState([]); 
         const tracksPerTrackPage = 10; // Adjust as needed for display
-        const [trackDuplicationCounts, setTrackDuplicationCounts] = useState({});
+        const [, setTrackDuplicationCounts] = useState({});
         const editingSearchRef = useRef(null);
         const editingSectionRef = useRef(null);
         const mainRef = useRef(null);
@@ -86,7 +86,7 @@
                 duplicationCounts[baseKey] = (duplicationCounts[baseKey] || 0) + 1;
             });
 
-            setTrackDuplicationCounts(duplicationCounts);
+            // setTrackDuplicationCounts(duplicationCounts);
         }, [selectedPlaylistObj, setTracksEdited]);
 
         // Saves a playlist that has been edited
@@ -155,7 +155,7 @@
                 const trackWithKey = { ...track, uniqueKey: `${baseKey}-1`}
                  setTracksEdited((prevTracks) => [ trackWithKey, ...prevTracks]);
             },
-            [tracksEdited, setTracksEdited]
+            [tracksEdited, setTracksEdited, setIsDuplicateModalVisible]
         );
 
 

@@ -20,7 +20,7 @@ function App() {
   const [existingPlaylist, setExistingPlaylist] = useState([]);
   const [newPlaylistTracks, setNewPlaylistTracks] = useState([]);
   const [playlistName, setPlaylistName] = useState('');
-  const [isDuplicateModalVisible, setIsDuplicateModalVisible] = useState(false);
+  let setIsDuplicateModalVisible = false;
   const [ duplicateTrack, setDuplicateTrack ] = useState(null);
 
   const [dashboardOpen, setDashboardOpen] = useState(false);
@@ -159,6 +159,10 @@ function App() {
     setIsAppLoaded(false);
   }
 
+  const handleSetSearchLoading = useCallback((bool) => {
+    setSearchLoading(bool);
+  }, []);
+
   const playlistProps = {
     playlistName,
     playlistTracks:newPlaylistTracks,
@@ -213,7 +217,7 @@ function App() {
               <div className='search'>
               <div className='searchBarContainer'>
                 <h2 id='title'>Results</h2>
-                <SearchBar onSearchResults={handleSearchResults} setSearchLoading={setSearchLoading} />
+                <SearchBar onSearchResults={handleSearchResults} setSearchLoading={handleSetSearchLoading} />
               </div>
               <div className='searchResultsContainer'>
                 <SearchResults 

@@ -136,30 +136,6 @@ export default function Playlist({
         }
     };
 
-    // const handleAddingDuplicateTracks = useCallback((track) => {
-    //     const baseKey = track.id;
-
-    //     setTrackDuplicationCounts(prevCounts => {
-    //         const newCounts = { ...prevCounts };
-    //         newCounts[baseKey] = (newCounts[baseKey] || 1) + 1;
-
-    //         const uniqueKey = `${baseKey}-${newCounts[baseKey]}`;
-
-    //         const trackWithUniqueKey = {
-    //             ...track,
-    //             uniqueKey: uniqueKey
-    //         };
-
-    //         setTracksEdited(prevTracks => {
-    //             if (prevTracks.some(t => t.uniqueKey === uniqueKey)) return prevTracks;
-    //             return [trackWithUniqueKey, ...prevTracks];
-    //         });
-
-    //         return newCounts; 
-    //     });
-    // }, [setTracksEdited]);
-
-
    
     return (
         <div className='displayPlaylistsContainer'>
