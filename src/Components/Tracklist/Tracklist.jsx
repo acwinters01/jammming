@@ -3,7 +3,7 @@ import Track from '../Track/Track';
 import PagesSetUp from '../Playlist/PagesSetUp';
 
 
-const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, playlistTracks = [], tracksEdited = [], keyPrefix = '', allowDuplicateAdd = false, handleAddingDuplicateTracks }) => {
+const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, tracksEdited = [], keyPrefix = '', allowDuplicateAdd = false, handleAddingDuplicateTracks }) => {
     // Add these logs at the start of TrackList to verify props received
     // console.log('Tracks Edited: ', tracksEdited)
     // console.log('Tracks: ', tracks)
@@ -36,7 +36,7 @@ const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, playlistTracks 
     // Selects playlist track by id
     const isSelected = (track) => {
     // if (allowDuplicateAdd) return false;
-      return !allowDuplicateAdd && playlistTracks.some(t => t.uniqueKey === track.uniqueKey);
+      return !allowDuplicateAdd && tracks.some(t => t.uniqueKey === track.uniqueKey);
 
     //  return playlistTracks.some(
     //     (playlistTrack) => playlistTrack.uniqueKey === track.uniqueKey

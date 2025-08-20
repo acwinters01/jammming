@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import Loading from './Loading';
+import { useState, useEffect } from 'react';
+import Loading from '../components/Loading/Loading';
 
 
 // Request User Authorization

@@ -1,17 +1,30 @@
 import React, { useCallback, useState } from 'react';
 import TrackList from '../Tracklist/Tracklist';
 import EditingPlaylist from './EditPlaylist';
-import { makeSpotifyRequest } from '../Authorization/Requests';
+import { makeSpotifyRequest } from '../../util/api';
 import PagesSetUp from './PagesSetUp';
 
-export default function Playlist({existingPlaylist, setExistingPlaylist, onNameChange, onEdit, onAdd, 
-                                onRemove, onSave, playlistTracks, playlistName, searchResults, setSearchLoading,
-                                setTransferLoading, onEditOpen, onEditClose, dashboardOpen, setShowModal}) {
+export default function Playlist({
+    existingPlaylist, 
+    setExistingPlaylist, 
+    onNameChange, 
+    onEdit, 
+    onAdd,                 
+    onRemove, 
+    onSave, 
+    playlistTracks, 
+    playlistName, 
+    searchResults, 
+    setSearchLoading,
+    setTransferLoading, 
+    onEditOpen, 
+    onEditClose, 
+    dashboardOpen,
+        setShowModal
+}) {
     const [selectedPlaylist, setSelectedPlaylist] = useState(null);
     const [currentPlaylistPage, setCurrentPlaylistPage] = useState(0);
     const [tracksEdited, setTracksEdited] = useState([]);
-    const [trackDuplicationCounts, setTrackDuplicationCounts] = useState({});
-    const [ duplicateTrack, setDuplicateTrack ] = useState(null);
     
     const playlistPerPage = 5;
     const startIndex = currentPlaylistPage * playlistPerPage;
@@ -166,7 +179,6 @@ export default function Playlist({existingPlaylist, setExistingPlaylist, onNameC
                 tracks={playlistTracks}
                 onAdd={onAdd} 
                 onRemove={onRemove}
-                playlistTracks={playlistTracks}
                 allowDuplicateAdd={false}
                 tracksPerPage={5}
 

@@ -1,9 +1,8 @@
 import React from "react";
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
-import DuplicateTrackModal from "../Components/Track/DuplicateTrackModal";
-import EditingPlaylist from "../Components/Playlist/EditPlaylist";
-import SearchResults from '../Components/SearchResults/SearchResults';
+import DuplicateTrackModal from "../components/Track/DuplicateTrackModal";
+import EditingPlaylist from "../components/Playlist/EditPlaylist";
+import SearchResults from '../components/SearchResults/SearchResults';
 
 
 

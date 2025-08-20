@@ -1,10 +1,10 @@
 import React, {useCallback} from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import Playlist from '../Components/Playlist/Playlist';
-import SearchResults from '../Components/SearchResults/SearchResults';
-import { makeSpotifyRequest } from '../Components/Authorization/Requests';
+import Playlist from '../components/Playlist/Playlist';
+import SearchResults from '../components/SearchResults/SearchResults';
+import { makeSpotifyRequest } from '../util/api';
 
-jest.mock('../Components/Authorization/Requests', () => ({
+jest.mock('../util/api', () => ({
     makeSpotifyRequest: jest.fn()
 }));
 
@@ -173,7 +173,6 @@ function HandleTrackWrapper() {
             tracks: newPlaylistTracks
         };
 
-        console.log('Saving playlist', newPlaylist)
 
         setExistingPlaylist((prevPlaylists) => {
         // Ensure prevPlaylists is an array and newPlaylist has tracks
@@ -193,7 +192,6 @@ function HandleTrackWrapper() {
 
     const updatePlaylistName = useCallback((newName, playlistIndex) => {
     
-        console.log(`Playlist is ${playlistIndex}`)
         // Checks if playlistIndex is a number and not over or under the existingPlaylist length
         if (typeof playlistIndex === 'number' && playlistIndex >= 0 && playlistIndex < existingPlaylist.length) {
             console.log(`Playlist is existing`);
@@ -302,7 +300,6 @@ describe('Playlist Component', () => {
         fireEvent.click(addTrackButton);
 
         const updatedTracks = playlistComponenet.container.querySelectorAll('.displayPlaylistsContainer .displayTrackList .displaytrackContainer').length;
-        console.log(updatedTracks)
         expect(updatedTracks).toBe(1);
 
         const nameInput = screen.getByTestId('playlist-name-input');

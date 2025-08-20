@@ -1,5 +1,4 @@
-import React from 'react';
-import '../App/App.css'
+import '../../styles/App.css'
 
 const Loading = ({ isLoading = true }) => {
     if(!isLoading) return null;

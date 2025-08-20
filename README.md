@@ -1,70 +1,221 @@
-# Getting Started with Create React App
+# Jammming
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Jamming is a React-based web application that allows users to search for tracks using the Spotify API, create custom playlists, and save them directly to their Spotify account. Built with modern front-end technologies, this project demonstrates working with APIs, state management, pagination, and user authentication. 
 
-## Available Scripts
+<br>
 
-In the project directory, you can run:
+- **FrontEnd** - `https://github.com/acwinters01/jammming`
+- **BackEnd** - `https://github.com/acwinters01/jammming-backend`
 
-### `npm start`
+<br>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features: 
+- **Spotify Track Search** - Search for songs using the Spotify API
+- **Add/Remove Tracks** - Add tracks to a playlist with duplicate support
+- **Edit Playlist Name** - Rename Playlists on the fly
+- **Save to Spotify** - Authenticate and save custom playlists to your Spotify account
+- **Responsive UI** - Optimized for both desktop and mobile
+- **Pagination** - Browse through search results and playlists efficently. 
+- **Dynamic UI** - Uses conditional rendering for a clean experience
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<br>
 
-### `npm test`
+## Tech Stack:
+- **React 18** (Create React App)
+- **JavaScript**
+- **Spotify Web API** (accessed via backend)
+- **React Testing Library + Jest**
+- **ESLint** (Linting)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<br>
 
-### `npm run build`
+## Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 1. Environment Variables
+Create a `.env` in the project root:
+<br>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+REACT_APP_API_BASE_URL=http://localhost:4000      # your backend base URL
+REACT_APP_SPOTIFY_CLIENT_ID=your_client_id        # if frontend needs it for display or flows
+REACT_APP_REDIRECT_URI=http://localhost:3000      # used if backend redirects back to frontend after OAuth
 
-### `npm run eject`
+```
+<br>
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 2. Run Backend
+Follow the backend README.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+git clone https://github.com/acwinters01/jammming-backend.git
+cd jammming-backend
+npm install
+npm run dev # or npm start 
+# Backend will likely be on http://localhost:5005
+```
+<br>
+<br>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 3. Run the Frontend
+```bash
+git clone https://github.com/acwinters01/jammming.git
+cd jammming
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+npm install
+npm run dev # or npm start 
 
-## Learn More
+# Frontend runs on http://localhost:3000
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+If you decide to use a different origin (e.g. :4000), enable CORS on the backend or use a CRA proxy. 
+  
+<br>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Option A:**  Enabling CORS on the Backend 
 
-### Code Splitting
+In the backend: 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```Javascript
+import cors from 'cors';
+app.use( cors({ origin: "http://localhost:4000", credentials: true }));
+```
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+<br>
 
-### Making a Progressive Web App
+**Option B:** Use a CRA proxy
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+In the package.json (frontend):
 
-### Advanced Configuration
+```Javascript
+proxy: "http://localhost:4000"
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+You can then call the API with relative paths (e.g. /api/search.)
 
-### Deployment
+Please do **not** rely on the proxy in production!
+<br>
+<br>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+## API Contract (example)
+The Frontend expects the backend to provide:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Search
+- GET /api/search?q={term}
+<br>
+
+- Response:
+
+    ```json
+    {
+        "tracks": [
+            { "id": '123', "name": 'Song', "artist": 'Artist', "album": 'Album', "uri": 'spotify:track:123',
+            }
+        ]
+    }
+    ```
+<br>
+<br>
+
+### Save Playlist
+- POST /api/playlists
+
+- Body:
+
+    ```json
+    { "name": 'My Playlist', "tracks": ['spotify:track:123', 'spotify:track:456'] }
+    ```
+    <br>
+
+- Response:
+
+    ```json
+    { "playlistId": "abc123", "url": "https://open.spotify.com/playlist/abc123" }
+    ```
+
+    Make sure it matches your backend to keep the front end fetch code in sync
+
+<br>
+
+## Project Structure
+```bash
+src/
+├── __tests__/
+│ 
+├── components/
+│   ├── Dashboard/
+│   ├── Loading/
+│   ├── Playlist/
+│   ├── SearchBar/
+│   ├── SearchResults/
+│   ├── Track/
+│   └── TrackList/
+│  
+├── util/
+│   └── api.js    # fetch wrappers that use REACT_APP_API_BASE_URL
+├── App.js
+├── index.js
+└── styles/
+```
+
+<br>
+
+## Testing
+```bash
+npm test
+```
+<br>
+
+- Unit tests for modal pop-ups, add/remove, input changes, and "save playlist" flow
+- Used @testing-library/react queries (getByRole, getByText, getByTestId)
+
+<br>
+
+
+## Development
+
+
+### Frontend
+- Netlify / Vercel / GitHub Pages
+    -  Build: npm run build
+    - Serve the build/ directory
+    - Set environment variables in your hosting provider
+    - **Do not** use CRA proxy in production! You should use the REACT_APP_SPOTIFY_BASE_URL
+
+### Backend
+- Deploy separately (Render, Railway, Heroku alternative, ete)
+- Update REACT_APP_API_URL in the frontend environment to the deployed backend URL
+
+<br>
+
+## Troubleshooting
+- Input value not updating in tests
+    - Ensure the input is controlled: 
+
+
+    ```JSX
+    <input value={playlistName} onChange{(e) => setPlaylistName(e.target)} />
+    ```
+
+    <br>
+    - In tests, prefer userEvent.type() or await waitFor(...) after fireEvent.change(..)
+    <br>
+    <br>
+
+- CORS errors
+    - Add cors() on backend or use CRA proxy in **DEV**
+    <br>
+
+- 401/403 from Spotify
+    - Ensure backend OAuth is configured ( client id / secret, redirect URI ), and tokens are being stored / forwarded correctly
+
+<br>
+
+## Contributing
+1. For the repo
+2. Create a feature branch: git checkout -b feat/awesomeness
+3. Commit changes: git commit -m "Add awesome"
+4. Push: git push origin feat/awesomeness
+5. Open a PR

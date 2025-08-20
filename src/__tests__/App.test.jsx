@@ -1,14 +1,13 @@
-import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from '../Components/App/App'
+import App from '../App'
 
 
 // Mocking the Authorization component
-jest.mock('../Components/Authorization/Authorization', () => {
+jest.mock('../util/Authorization', () => {
 
     // Make sure to grab the exports from the component
-    const actual = jest.requireActual('../Components/Authorization/Authorization');
+    const actual = jest.requireActual('../util/Authorization');
 
     return {
         ...actual, // use the real exports
@@ -19,7 +18,7 @@ jest.mock('../Components/Authorization/Authorization', () => {
     }
 });
 
-jest.mock('../Components/Authorization/Loading', () => ({ isLoading }) =>
+jest.mock('../Components/Loading/Loading', () => ({ isLoading }) =>
   isLoading ? <div>Loading...</div> : null
 );
 
@@ -36,7 +35,8 @@ describe('App Component', () => {
     afterEach(()=> {
         // Deletes mock tokens after every test
         localStorage.clear()
-    })
+    });
+    
     it('shows the loading screen after clicking login', async() => {
         render(<App />);
 

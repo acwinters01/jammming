@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import EditingPlaylist from '../Components/Playlist/EditPlaylist';
-import DuplicateTrackModal from '../Components/Track/DuplicateTrackModal';
-import TrackList from '../Components/Tracklist/Tracklist';
+import EditingPlaylist from '../components/Playlist/EditPlaylist';
+import DuplicateTrackModal from '../components/Track/DuplicateTrackModal';
+import TrackList from '../components/Tracklist/Tracklist';
 
 
 const tracks = [

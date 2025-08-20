@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { getUserPlaylists, getUserProfile, makeSpotifyRequest } from '../Authorization/Requests';
+import { getUserPlaylists, getUserProfile, makeSpotifyRequest } from '../../util/api';
 import PagesSetUp from '../Playlist/PagesSetUp';
 
 const Dashboard = (props) => {

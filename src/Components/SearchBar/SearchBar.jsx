@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
-import { getUserProfile, makeSpotifyRequest } from '../Authorization/Requests';
+import { getUserProfile, makeSpotifyRequest } from '../../util/api';
 
 
 const SearchBar = ({ onSearchResults, tracksPerPage, setSearchLoading}) => {
