@@ -3,8 +3,8 @@ import Loading from '../components/Loading/Loading';
 
 
 // Request User Authorization
-const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-const redirectUri = process.env.REACT_APP_REDIRECT_URI;
+const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+const redirectUri = import.meta.env.VITE_REDIRECT_URI;
 const scope = 'user-read-private user-read-email playlist-modify-public playlist-modify-private playlist-read-private';
 
 // Generate random string for code verifier
@@ -42,6 +42,7 @@ export async function initiateAuthorization (){
 
     const hashed = await sha256(codeVerifier);
     const codeChallenge = base64encode(hashed);
+    console.log("Client ID:", clientId);
 
     const authURL = new URL('https://accounts.spotify.com/authorize');
 
