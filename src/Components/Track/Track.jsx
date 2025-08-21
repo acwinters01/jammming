@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 
-const Track = ({uniqueKey, id, name, artist, album, uri, imageUri, image, isSelected, onRemove, onAdd, keyPrefix, actionType}) => {
+const Track = ({uniqueKey, id, name, artist, album, uri, imageUri, image, isSelected, onRemove, onAdd, keyPrefix}) => {
 
     const track = useMemo (() => ({
         uniqueKey,

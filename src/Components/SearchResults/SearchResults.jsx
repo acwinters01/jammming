@@ -2,7 +2,7 @@ import React from 'react';
 import TrackList from '../Tracklist/Tracklist';
 
 
-const SearchResults = ({ tracks, onAdd, onRemove, playlistTracks, tracksEdited, keyPrefix, tracksPerPage, allowDuplicateAdd}) => {
+const SearchResults = ({ tracks, onAdd, onRemove, playlistTracks, tracksEdited, tracksPerPage}) => {
 
     // If there are no search results
     if (!tracks || tracks.length === 0) {

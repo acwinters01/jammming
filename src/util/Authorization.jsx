@@ -103,7 +103,7 @@ export async function getToken (code) {
     } catch (error) {
         console.error('Error fetching token:', error);
     }
-};
+}
 
 // Refresh the access token when it has expired
 export async function refreshToken () {
@@ -144,14 +144,14 @@ export async function refreshToken () {
     } catch (error) {
         console.error('Error refreshing token:', error);
     }
-};
+}
 
 // Check if the current access token is expired
 export function isTokenExpired() {
     const expiresIn = localStorage.getItem('expires_in');
     if (!expiresIn) return true;
     return Date.now() > parseInt(expiresIn, 10);
-};
+}
 
 // Authorization Component
 function Authorization({ onLogin, onLogout }) {
@@ -236,7 +236,7 @@ function Authorization({ onLogin, onLogout }) {
             )}
         </div>
     );
-};
+}
 
 
 export default Authorization;

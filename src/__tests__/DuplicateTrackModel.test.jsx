@@ -1,4 +1,5 @@
 import React from "react";
+import { vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import DuplicateTrackModal from "../components/Track/DuplicateTrackModal";
 import EditingPlaylist from "../components/Playlist/EditPlaylist";
@@ -15,8 +16,8 @@ const tracks = [
             artist: 'Test Artist',
             image: '/test.jpg',
             uri: '/testURI.jpg', 
-            onAdd: jest.fn(),
-            onRemove: jest.fn(),
+            onAdd: vi.fn(),
+            onRemove: vi.fn(),
             isSelected: true,
 
         }, 
@@ -28,8 +29,8 @@ const tracks = [
             artist: 'Test Artist-2',
             imageUri: '/test2.jpg',
             uri: '/testURI2.jpg', 
-            onAdd: jest.fn(),
-            onRemove: jest.fn(),
+            onAdd: vi.fn(),
+            onRemove: vi.fn(),
             isSelected: false,
 
         }
@@ -44,8 +45,8 @@ const searchTracks = [
             artist: 'Test Artist',
             image: '/test.jpg',
             uri: '/testURI.jpg', 
-            onAdd: jest.fn(),
-            onRemove: jest.fn(),
+            onAdd: vi.fn(),
+            onRemove: vi.fn(),
             isSelected: true,
             keyPrefix: 'search'
 
@@ -58,8 +59,8 @@ const searchTracks = [
             artist: 'Test Artist-2',
             imageUri: '/test2.jpg',
             uri: '/testURI2.jpg', 
-            onAdd: jest.fn(),
-            onRemove: jest.fn(),
+            onAdd: vi.fn(),
+            onRemove: vi.fn(),
             isSelected: false,
             keyPrefix: 'search'
 
@@ -72,8 +73,8 @@ const searchTracks = [
             artist: 'Test Artist-3',
             imageUri: '/test3.jpg',
             uri: '/testURI3.jpg', 
-            onAdd: jest.fn(),
-            onRemove: jest.fn(),
+            onAdd: vi.fn(),
+            onRemove: vi.fn(),
             isSelected: false,
             keyPrefix: 'search'
 
@@ -91,28 +92,28 @@ const testPlaylist = [
 const defaultEditingPlaylistProps = {
     existingPlaylist: testPlaylist,
     selectedPlaylist: 0,
-    setSelectedPlaylist: jest.fn(),
-    onEdit: jest.fn(),
-    setTracksEdited: jest.fn(),
+    setSelectedPlaylist: vi.fn(),
+    onEdit: vi.fn(),
+    setTracksEdited: vi.fn(),
     tracksEdited: tracks,
     tracks: tracks,
-    onNameChange: jest.fn(),
+    onNameChange: vi.fn(),
     searchResults: [],
-    handleExitEditMode: jest.fn(),
-    setSearchLoading: jest.fn(),
+    handleExitEditMode: vi.fn(),
+    setSearchLoading: vi.fn(),
 };
 
 const searchProps = {
     tracks: searchTracks,
-    onAdd: jest.fn(),
-    onRemove: jest.fn(),
+    onAdd: vi.fn(),
+    onRemove: vi.fn(),
     playlistTracks: testPlaylist[0].tracks
 }
 
 const duplicateTrackModalProps = {
     track: searchTracks[0],
-    onConfirm: jest.fn(),
-    onCancel: jest.fn(),
+    onConfirm: vi.fn(),
+    onCancel: vi.fn(),
 }
 
 

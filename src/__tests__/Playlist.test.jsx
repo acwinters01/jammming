@@ -1,11 +1,12 @@
 import React, {useCallback} from 'react';
+import { vi } from 'vitest';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import Playlist from '../components/Playlist/Playlist';
 import SearchResults from '../components/SearchResults/SearchResults';
 import { makeSpotifyRequest } from '../util/api';
 
-jest.mock('../util/api', () => ({
-    makeSpotifyRequest: jest.fn()
+vi.mock('../util/api', () => ({
+    makeSpotifyRequest: vi.fn()
 }));
 
 const mockPlaylists = [
@@ -21,8 +22,8 @@ const mockPlaylists = [
                 artist: 'Test Artist',
                 image: '/test.jpg',
                 uri: '/testURI.jpg', 
-                onAdd: jest.fn(),
-                onRemove: jest.fn(),
+                onAdd: vi.fn(),
+                onRemove: vi.fn(),
                 isSelected: false,
                 keyPrefix: 'playlist'
             },
@@ -34,8 +35,8 @@ const mockPlaylists = [
                 artist: 'Test Artist-2',
                 imageUri: '/test2.jpg',
                 uri: '/testURI2.jpg', 
-                onAdd: jest.fn(),
-                onRemove: jest.fn(),
+                onAdd: vi.fn(),
+                onRemove: vi.fn(),
                 isSelected: false,
                 keyPrefix: 'playlist'
 
@@ -55,8 +56,8 @@ const mockPlaylists = [
                 artist: 'Test Artist-3',
                 image: '/test3.jpg',
                 uri: '/testURI3.jpg', 
-                onAdd: jest.fn(),
-                onRemove: jest.fn(),
+                onAdd: vi.fn(),
+                onRemove: vi.fn(),
                 isSelected: false,
                 keyPrefix: 'playlist'
             },
@@ -68,8 +69,8 @@ const mockPlaylists = [
                 artist: 'Test Artist-4',
                 imageUri: '/test4.jpg',
                 uri: '/testURI4.jpg', 
-                onAdd: jest.fn(),
-                onRemove: jest.fn(),
+                onAdd: vi.fn(),
+                onRemove: vi.fn(),
                 isSelected: false,
                 keyPrefix: 'playlist'
 
@@ -89,8 +90,8 @@ const searchTracks = [
             artist: 'Test Artist-2',
             image: '/test2.jpg',
             uri: '/testURI2.jpg', 
-            onAdd: jest.fn(),
-            onRemove: jest.fn(),
+            onAdd: vi.fn(),
+            onRemove: vi.fn(),
             isSelected: true,
             keyPrefix: 'search'
 
@@ -103,8 +104,8 @@ const searchTracks = [
             artist: 'Test Artist-3',
             imageUri: '/test3.jpg',
             uri: '/testURI3.jpg', 
-            onAdd: jest.fn(),
-            onRemove: jest.fn(),
+            onAdd: vi.fn(),
+            onRemove: vi.fn(),
             isSelected: false,
             keyPrefix: 'search'
 
@@ -117,8 +118,8 @@ const searchTracks = [
             artist: 'Test Artist-4',
             imageUri: '/test4.jpg',
             uri: '/testURI4.jpg', 
-            onAdd: jest.fn(),
-            onRemove: jest.fn(),
+            onAdd: vi.fn(),
+            onRemove: vi.fn(),
             isSelected: false,
             keyPrefix: 'search'
 
@@ -129,19 +130,19 @@ const defaultProps = {
     existingPlaylist: mockPlaylists,
     playlistName:"",
     playlistTracks:[],
-    onNameChange:jest.fn(),
-    setExistingPlaylist:jest.fn(),
-    onEdit:jest.fn(),
-    onSave:jest.fn(),
-    onRemove:jest.fn(),
-    onAdd:jest.fn(),
+    onNameChange:vi.fn(),
+    setExistingPlaylist:vi.fn(),
+    onEdit:vi.fn(),
+    onSave:vi.fn(),
+    onRemove:vi.fn(),
+    onAdd:vi.fn(),
     searchResults:[],
-    setSearchLoading:jest.fn(),
-    setTransferLoading:jest.fn(),
-    transferLoading:jest.fn(),
-    onEditOpen:jest.fn(),
-    onEditClose:jest.fn(),
-    setShowModal:jest.fn(),
+    setSearchLoading:vi.fn(),
+    setTransferLoading:vi.fn(),
+    transferLoading:vi.fn(),
+    onEditOpen:vi.fn(),
+    onEditClose:vi.fn(),
+    setShowModal:vi.fn(),
     dashboardOpen:false
 }
 
@@ -215,26 +216,26 @@ function HandleTrackWrapper() {
         setExistingPlaylist: setExistingPlaylist,
         onAdd: addingTrack,
         onRemove: removingTrack,
-        onEdit: jest.fn(),
-        onEditClose: jest.fn(),
-        onEditOpen: jest.fn(),
+        onEdit: vi.fn(),
+        onEditClose: vi.fn(),
+        onEditOpen: vi.fn(),
         onNameChange: updatePlaylistName,
         onSave: handleSave,
         playlistName: playlistName,
         playlistTracks: newPlaylistTracks,
-        setSelectedPlaylist: jest.fn(),
+        setSelectedPlaylist: vi.fn(),
         showModal: false,
         searchResults: searchTracks,
         tracks: searchTracks,
-        setSearchLoading: jest.fn(),
-        setTransferLoading: jest.fn(),
-        transferLoading: jest.fn(),
+        setSearchLoading: vi.fn(),
+        setTransferLoading: vi.fn(),
+        transferLoading: vi.fn(),
     };
 
     const searchResultsProps = {
         keyPrefix: 'search-',
         onAdd: addingTrack,
-        onRemove: jest.fn(),
+        onRemove: vi.fn(),
         playlistTracks: newPlaylistTracks,
         tracks: searchTracks,
     }
@@ -246,7 +247,7 @@ function HandleTrackWrapper() {
         <SearchResults {...searchResultsProps}/>
     </>
     );
-};
+}
 
 function RemovingPlaylistWrapper() {
     const [existingPlaylist, setExistingPlaylist] = React.useState([...mockPlaylists]);
@@ -260,22 +261,22 @@ function RemovingPlaylistWrapper() {
         dashboardOpen: false,
         existingPlaylist: existingPlaylist,
         setExistingPlaylist: setExistingPlaylist,
-        onAdd: jest.fn(),
+        onAdd: vi.fn(),
         onRemove: handleRemove,
-        onEdit: jest.fn(),
-        onEditClose: jest.fn(),
-        onEditOpen: jest.fn(),
-        onNameChange: jest.fn(),
-        onSave: jest.fn(),
+        onEdit: vi.fn(),
+        onEditClose: vi.fn(),
+        onEditOpen: vi.fn(),
+        onNameChange: vi.fn(),
+        onSave: vi.fn(),
         playlistName: '',
         playlistTracks: [searchTracks[0]],
-        setSelectedPlaylist: jest.fn(),
+        setSelectedPlaylist: vi.fn(),
         showModal: false,
         searchResults: searchTracks,
         tracks: searchTracks,
-        setSearchLoading: jest.fn(),
-        setTransferLoading: jest.fn(),
-        transferLoading: jest.fn(),
+        setSearchLoading: vi.fn(),
+        setTransferLoading: vi.fn(),
+        transferLoading: vi.fn(),
     };
 
     return <Playlist {...playlistProps} />;
