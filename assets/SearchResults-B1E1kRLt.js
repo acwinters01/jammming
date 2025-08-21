@@ -1,0 +1,1 @@
+import{j as s,T as u}from"./index-R5YN88vi.js";const d=({tracks:e,onAdd:r,onRemove:t,playlistTracks:a,tracksEdited:l,tracksPerPage:i})=>{if(!(!e||e.length===0))return s.jsx("div",{className:"displaySearchResults",children:s.jsx(u,{keyPrefix:"search",tracks:e,onAdd:r,onRemove:t,playlistTracks:a,tracksEdited:l,allowDuplicateAdd:!0,tracksPerPage:i})})};export{d as default};
