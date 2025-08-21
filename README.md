@@ -21,11 +21,11 @@ Jamming is a React-based web application that allows users to search for tracks 
 <br>
 
 ## Tech Stack:
-- **React 18** (Create React App)
+- **React 18 + Vite**
 - **JavaScript**
 - **Spotify Web API** (accessed via backend)
-- **React Testing Library + Jest**
-- **ESLint** (Linting)
+- **Vitest + React Testing Library**
+- **ESLint**
 
 <br>
 
@@ -33,13 +33,13 @@ Jamming is a React-based web application that allows users to search for tracks 
 
 
 ### 1. Environment Variables
-Create a `.env` in the project root:
+Create a `.env` in the project root (Vite requires VITE_prefix):
 <br>
 
 ```bash
-REACT_APP_API_BASE_URL=http://localhost:4000      # your backend base URL
-REACT_APP_SPOTIFY_CLIENT_ID=your_client_id        # if frontend needs it for display or flows
-REACT_APP_REDIRECT_URI=http://localhost:3000      # used if backend redirects back to frontend after OAuth
+VITE_API_BASE_URL=http://localhost:4000      # your backend base URL
+VITE_SPOTIFY_CLIENT_ID=your_client_id        # if frontend needs it for display or flows
+VITE_REDIRECT_URI=http://localhost:5173      # used if backend redirects back to frontend after OAuth
 
 ```
 <br>
@@ -68,7 +68,7 @@ npm run dev # or npm start
 # Frontend runs on http://localhost:3000
 ```
 
-If you decide to use a different origin (e.g. :4000), enable CORS on the backend or use a CRA proxy. 
+If you decide to use a different origin (e.g. :4000), enable CORS support in the backend to allow requests from the frontend. 
   
 <br>
 
@@ -78,22 +78,36 @@ In the backend:
 
 ```Javascript
 import cors from 'cors';
-app.use( cors({ origin: "http://localhost:4000", credentials: true }));
+app.use( cors({ origin: "http://localhost:5173", credentials: true }));
 ```
 
 
 <br>
 
-**Option B:** Use a CRA proxy
+**Option B:** Vite Dev proxy
 
-In the package.json (frontend):
+Instead of enabling CORS, you can also configure a proxy in Vite:
+
+In the vite.config.js (frontend):
 
 ```Javascript
-proxy: "http://localhost:4000"
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+    plugins: [react()],
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:5005',
+                changeOrigin: true,
+            }
+        }
+    }
+})
 ```
 
 You can then call the API with relative paths (e.g. /api/search.)
-
 Please do **not** rely on the proxy in production!
 <br>
 <br>
@@ -179,10 +193,9 @@ npm test
 
 ### Frontend
 - Netlify / Vercel / GitHub Pages
-    -  Build: npm run build
+    - Build: npm run build
     - Serve the build/ directory
     - Set environment variables in your hosting provider
-    - **Do not** use CRA proxy in production! You should use the REACT_APP_SPOTIFY_BASE_URL
 
 ### Backend
 - Deploy separately (Render, Railway, Heroku alternative, ete)
@@ -205,7 +218,8 @@ npm test
     <br>
 
 - CORS errors
-    - Add cors() on backend or use CRA proxy in **DEV**
+    - In development, make sure the backend allows requests from you Vite **DEV** server
+
     <br>
 
 - 401/403 from Spotify
