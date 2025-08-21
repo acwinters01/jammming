@@ -14,25 +14,31 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
     "lint": "eslint src --ext .js,.jsx",
-    "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "rules": {}
+  },
+  "jest": {
+    "testMatch": [
+      "**/?(*.)+(test).[jt]s?(x)"
     ]
   },
-
-  "jest": {
-    "testMatch": ["**/?(*.)+(test).[jt]s?(x)"]
-  },
-
   "browserslist": {
     "production": [
       ">0.2%",
@@ -50,15 +56,21 @@
     "@babel/preset-react": "^7.25.7",
     "@babel/register": "^7.25.7",
     "@svgr/webpack": "^8.1.0",
-    "@testing-library/jest-dom": "^6.5.0",
-    "@testing-library/react": "^16.0.1",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@vitejs/plugin-react": "^4.7.0",
     "eslint": "^8.57.1",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "gh-pages": "^6.3.0",
     "jest": "^27.5.1",
+    "jsdom": "^26.1.0",
     "postcss": "^8.5.3",
-    "react-app-rewired": "^2.2.1",
-    "react-scripts": "^5.0.1",
-    "serialize-javascript": "^6.0.2"
+    "serialize-javascript": "^6.0.2",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4"
   },
   "overrides": {
     "@svgr/webpack": "$@svgr/webpack",

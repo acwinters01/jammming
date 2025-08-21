@@ -1,15 +1,15 @@
 import React, {useCallback, useState} from 'react';
-import Playlist from '../Playlist/Playlist';
-import Authorization from '../Authorization/Authorization';
-import Dashboard from '../Dashboard/Dashboard';
-import SearchBar from '../SearchBar/SearchBar';
-import SearchResults from '../SearchResults/SearchResults';
-import Loading from '../Authorization/Loading'
-import DuplicateTrackModal from '../Track/DuplicateTrackModal';
-import PlaylistModal from '../Playlist/PlaylistModal'
-import './App.css';
-import './App-mobile.css';
-import './reset.css';
+import Playlist from './components/Playlist/Playlist';
+import Authorization from './util/Authorization';
+import Dashboard from './components/Dashboard/Dashboard';
+import SearchBar from './components/SearchBar/SearchBar';
+import SearchResults from './components/SearchResults/SearchResults';
+import Loading from './components/Loading/Loading'
+import DuplicateTrackModal from './components/Track/DuplicateTrackModal';
+import PlaylistModal from './components/Playlist/PlaylistModal'
+import './styles/App.css'
+import './styles/App-mobile.css'
+import './styles/reset.css'
 
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
   const [existingPlaylist, setExistingPlaylist] = useState([]);
   const [newPlaylistTracks, setNewPlaylistTracks] = useState([]);
   const [playlistName, setPlaylistName] = useState('');
-  const [isDuplicateModalVisible, setIsDuplicateModalVisible] = useState(false);
+  let setIsDuplicateModalVisible = false;
   const [ duplicateTrack, setDuplicateTrack ] = useState(null);
 
   const [dashboardOpen, setDashboardOpen] = useState(false);
@@ -55,7 +55,9 @@ function App() {
 
   // Functions
   const handleConfirmAdd = (track) => {
-    setNewPlaylistTracks((prevTracks) => [...prevTracks, track]);
+    const uniqueKey = `track-${track.id}-${Date.now()}-${Math.random()}`;
+
+    setNewPlaylistTracks((prevTracks) => [...prevTracks,{...track, uniqueKey}]); // Adding making sure of duplicates
     setIsDuplicateModalVisible(false);
     setDuplicateTrack(null);
   }
@@ -66,14 +68,11 @@ function App() {
   };
 
   // Add track to new playlist
-  const addTrack = useCallback(
-    (track) => {
+  const addTrack = (track) => {
       console.log('being read')
       const uniqueKey = `track-${track.id}-${Date.now()}-${Math.random()}`;
-      setNewPlaylistTracks((prevTracks) => [...prevTracks, track]);
-    },
-    [newPlaylistTracks]
-  );
+      setNewPlaylistTracks((prevTracks) => [...prevTracks, {...track, uniqueKey}]);
+    };
 
   // Remove track to new playlist
   const removeTrack = useCallback((track) => {
@@ -90,8 +89,6 @@ function App() {
     setSearchResults(results || []);
   };
 
-  
-
   // Updates Playlist name
   const updatePlaylistName = useCallback((newName, playlistIndex) => {
 
@@ -99,40 +96,26 @@ function App() {
     // Checks if playlistIndex is a number and not over or under the existingPlaylist length
     if (typeof playlistIndex === 'number' && playlistIndex >= 0 && playlistIndex < existingPlaylist.length) {
         console.log(`Playlist is existing`);
-
         setExistingPlaylist((prevPlaylists) => {
           const updatedPlaylists = [...prevPlaylists];
           updatedPlaylists[playlistIndex].playlistName =  newName;
           return updatedPlaylists;
-        })
+        });
 
     } else {
       setPlaylistName(newName);
-
     }
   }, [existingPlaylist])
 
   // Saves Playlist
   const savePlaylist = useCallback(() => {
     // Ensure playlist has a name and tracks
-    if (!playlistName && newPlaylistTracks.length === 0) {
-      setPlaylistModalMessage("Please name your playlist and add tracks before saving.");
+    if (!playlistName || newPlaylistTracks.length === 0) {
+      setPlaylistModalMessage(!playlistName ? "Please name your playlist before saving." : "Please add tracks before saving.");
       setShowPlaylistModal(true);
       return;
     }
-
-    if (!playlistName) {
-      setPlaylistModalMessage("Please name your playlist before saving.");
-      setShowPlaylistModal(true);
-      return;
-    }
-
-    if (newPlaylistTracks.length === 0) {
-      setPlaylistModalMessage("Please add tracks before saving.");
-      setShowPlaylistModal(true);
-      return;
-    }
-
+    // Creating a playlistId for local playlist
     const generateLocalId = () => `local-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
 
@@ -143,18 +126,8 @@ function App() {
         tracks: newPlaylistTracks
     };
 
-    console.log('Saving playlist', newPlaylist)
-
-    setExistingPlaylist((prevPlaylists) => {
-      // Ensure prevPlaylists is an array and newPlaylist has tracks
-      const validPrevPlaylists = Array.isArray(prevPlaylists) ? prevPlaylists : [];
-      if (newPlaylist.tracks && newPlaylist.tracks.length > 0) {
-          return [...validPrevPlaylists, newPlaylist];
-      } else {
-          console.log("No tracks available in customPlaylist, skipping update.");
-          return validPrevPlaylists; // Return the previous state without changes if no tracks
-      }
-    });    
+    // console.log('Saving playlist', newPlaylist)
+    setExistingPlaylist((prev) => [...prev, newPlaylist]);    
     
     setPlaylistName('');
     setNewPlaylistTracks([]);
@@ -186,6 +159,33 @@ function App() {
     setIsAppLoaded(false);
   }
 
+  const handleSetSearchLoading = useCallback((bool) => {
+    setSearchLoading(bool);
+  }, []);
+
+  const playlistProps = {
+    playlistName,
+    playlistTracks:newPlaylistTracks,
+    onNameChange: updatePlaylistName,
+    setPlaylistName: setPlaylistName,
+    setExistingPlaylist: setExistingPlaylist,
+    existingPlaylist:existingPlaylist,
+    tracks:searchResults,
+    onEdit:editExistingPlaylist,
+    onSave:savePlaylist,
+    onRemove:removeTrack,
+    onAdd:addTrack,
+    searchResults:searchResults,
+    setSearchLoading:setSearchLoading,
+    setTransferLoading:setTransferLoading,
+    transferLoading:transferLoading,
+    onEditOpen:handleEditOpen,
+    onEditClose: handleEditClose,
+    setShowModal:setShowModal,
+    showModal:showModal,
+    dashboardOpen:dashboardOpen,
+  }
+
   return (
     <div className={`AppContainer ${dashboardOpen ? 'dashboard-open' : ''} ${isEditing ? 'editing-active' : ''}`}>
       <div className='mainAppTitle'>
@@ -212,68 +212,40 @@ function App() {
                 <div className='playlistTitle'>
                   <h2 id='title'>Playlists</h2>
                 </div>
-                <Playlist
-                  playlistName={playlistName}
-                  playlistTracks={newPlaylistTracks}
-                  onNameChange={updatePlaylistName}
-                  setPlaylistName={setPlaylistName}
-                  setExistingPlaylist={setExistingPlaylist}
-                  existingPlaylist={existingPlaylist}
-                  tracks={searchResults}
-                  onEdit={editExistingPlaylist}
-                  onSave={savePlaylist}
-                  onRemove={removeTrack}
-                  onAdd={addTrack}
-                  searchResults={searchResults}
-                  setSearchLoading={setSearchLoading}
-                  setTransferLoading={setTransferLoading}
-                  transferLoading={transferLoading}
-                  onEditOpen={handleEditOpen}
-                  onEditClose={handleEditClose}
-                  setShowModal={setShowModal}
-                  showModal={showModal}
-                  dashboardOpen={dashboardOpen}
-                />
+                <Playlist {...playlistProps}/>
               </div>
               <div className='search'>
               <div className='searchBarContainer'>
                 <h2 id='title'>Results</h2>
-                <SearchBar onSearchResults={handleSearchResults} setSearchLoading={setSearchLoading} />
+                <SearchBar onSearchResults={handleSearchResults} setSearchLoading={handleSetSearchLoading} />
               </div>
               <div className='searchResultsContainer'>
-                <SearchResults tracks={searchResults} onAdd={addTrack} onRemove={removeTrack} playlistTracks={newPlaylistTracks} keyPrefix={'search-'} />
+                <SearchResults 
+                  tracks={searchResults} 
+                  onAdd={addTrack} 
+                  onRemove={removeTrack} 
+                  playlistTracks={newPlaylistTracks} 
+                  keyPrefix={'search-'} 
+                />
               </div>
             </div>
             </div>
 
           </div>
 
-          {/* Dashboard Toggle Button
-          <button className="dashboardToggle" onClick={toggleDashboard} disabled={isEditing}>
-            {dashboardOpen ? '>' : '<'}
-          </button> */}
           {/* Dashboard Component */}
           <div className={`dashboardContainer ${dashboardOpen ? 'open' : ''}`}>
                 {/* Dashboard Toggle Button */}
             <button className="dashboardToggle" onClick={toggleDashboard} disabled={isEditing}>
               {dashboardOpen ? '>' : '<'}
             </button>
-            <Dashboard
-              setExistingPlaylist={setExistingPlaylist}
-              existingPlaylist={existingPlaylist}
-              isOpen={dashboardOpen}
-            />
+            <Dashboard setExistingPlaylist={setExistingPlaylist} existingPlaylist={existingPlaylist} isOpen={dashboardOpen}/>
           </div>
 
           {/* Modal */}
-          {showModal && (
-            <PlaylistModal message="Close the dashboard to edit a playlist." onClose={closeModal} />
-          )}
+          {showModal && ( <PlaylistModal message="Close the dashboard to edit a playlist." onClose={closeModal} />)}
           <DuplicateTrackModal track={duplicateTrack} onConfirm={handleConfirmAdd} onCancel={handleCancelAdd} />
-
-          {showPlaylistModal && (
-            <PlaylistModal message={playlistModalMessage} onClose={() => setShowPlaylistModal(false)} />
-          )}
+          {showPlaylistModal && ( <PlaylistModal message={playlistModalMessage} onClose={() => setShowPlaylistModal(false)} />)}
         </>
       )}
     </div>

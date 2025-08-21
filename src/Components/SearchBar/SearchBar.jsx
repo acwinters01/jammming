@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
-import { getUserProfile, makeSpotifyRequest } from '../Authorization/Requests';
+import { getUserProfile, makeSpotifyRequest } from '../../util/api';
 
 
-const SearchBar = ({ onSearchResults, tracksPerPage, setSearchLoading}) => {
+const SearchBar = ({ onSearchResults, setSearchLoading}) => {
 
     const [searchInput, setSearchInput] = useState('');
     const [recentSearches, setRecentSearches] = useState([]);
@@ -40,6 +40,8 @@ const SearchBar = ({ onSearchResults, tracksPerPage, setSearchLoading}) => {
 
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
+
+  
     }, [dropdownRef]);
 
     // Fetches search response
@@ -69,7 +71,7 @@ const SearchBar = ({ onSearchResults, tracksPerPage, setSearchLoading}) => {
             setSearchLoading(false);
         }
 
-    }, [searchInput, onSearchResults, recentSearches])
+    }, [searchInput, onSearchResults, recentSearches, setSearchLoading])
 
     // Function for button search to call
     const handleSearch = (event) => {

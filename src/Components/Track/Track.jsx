@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 
-const Track = ({uniqueKey, id, name, artist, album, uri, imageUri, image, isSelected, onRemove, onAdd, actionType}) => {
+const Track = ({uniqueKey, id, name, artist, album, uri, imageUri, image, isSelected, onRemove, onAdd, keyPrefix}) => {
 
     const track = useMemo (() => ({
         uniqueKey,
@@ -33,7 +33,7 @@ const Track = ({uniqueKey, id, name, artist, album, uri, imageUri, image, isSele
                     <p id="artist">{track.artist}</p> 
                     <p id="album">{track.album}</p>
                 </div>
-                <button id='trackButton' data-testid={`track-${track.id}`} onClick={handleTrackAction}>{isSelected(track) ? '-' : '+'}</button>
+                <button id='trackButton' data-testid={`${keyPrefix}-${track.id}`} onClick={handleTrackAction}>{isSelected(track) ? '-' : '+'}</button>
             </div>
         </div>
     );

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Loading from './Loading';
+import { useState, useEffect } from 'react';
+import Loading from '../components/Loading/Loading';
 
 
 // Request User Authorization
-const clientId = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-const redirectUri = process.env.REACT_APP_REDIRECT_URI;
+const clientId = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+const redirectUri = import.meta.env.VITE_REDIRECT_URI;
 const scope = 'user-read-private user-read-email playlist-modify-public playlist-modify-private playlist-read-private';
 
 // Generate random string for code verifier
@@ -42,6 +42,7 @@ export async function initiateAuthorization (){
 
     const hashed = await sha256(codeVerifier);
     const codeChallenge = base64encode(hashed);
+    console.log("Client ID:", clientId);
 
     const authURL = new URL('https://accounts.spotify.com/authorize');
 
@@ -102,7 +103,7 @@ export async function getToken (code) {
     } catch (error) {
         console.error('Error fetching token:', error);
     }
-};
+}
 
 // Refresh the access token when it has expired
 export async function refreshToken () {
@@ -143,14 +144,14 @@ export async function refreshToken () {
     } catch (error) {
         console.error('Error refreshing token:', error);
     }
-};
+}
 
 // Check if the current access token is expired
 export function isTokenExpired() {
     const expiresIn = localStorage.getItem('expires_in');
     if (!expiresIn) return true;
     return Date.now() > parseInt(expiresIn, 10);
-};
+}
 
 // Authorization Component
 function Authorization({ onLogin, onLogout }) {
@@ -235,7 +236,7 @@ function Authorization({ onLogin, onLogout }) {
             )}
         </div>
     );
-};
+}
 
 
 export default Authorization;

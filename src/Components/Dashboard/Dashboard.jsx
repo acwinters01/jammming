@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { getUserPlaylists, getUserProfile, makeSpotifyRequest } from '../Authorization/Requests';
+import { getUserPlaylists, getUserProfile, makeSpotifyRequest } from '../../util/api';
 import PagesSetUp from '../Playlist/PagesSetUp';
 
 const Dashboard = (props) => {
@@ -83,14 +83,14 @@ const Dashboard = (props) => {
                     let newResponse = await makeSpotifyRequest(`playlists/${playlist.id}/tracks?${queryParams.toString()}`, 'GET');
                     // console.log(`Tracks batch ${i}:`, newResponse.items); // Log each batch
                     getTracksResponse = [...getTracksResponse, ...newResponse.items];
-                };
+                }
                 
-            };
+            }
 
             // Check if we actually have tracks to process
             if (!Array.isArray(getTracksResponse) || getTracksResponse.length === 0) {
                 //console.log("No tracks found in the playlist.");
-            };
+            }
             let duplicationCounts = {}; // Track counts per ID
 
 
@@ -115,7 +115,7 @@ const Dashboard = (props) => {
                         image: trackInfo.track.album.images[1]?.url || './public/music_note_baseImage.jpg' // Fallback for missing image
                     };
                     prevPlaylistTracks.push(track);
-                };
+                }
             });
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App/App.css'
+import '../../styles/App.css'
 
 const DuplicateTrackModal = ({track, onConfirm, onCancel }) => {
     if (!track) return null;

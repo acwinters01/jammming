@@ -3,7 +3,7 @@ import Track from '../Track/Track';
 import PagesSetUp from '../Playlist/PagesSetUp';
 
 
-const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, playlistTracks = [], tracksEdited = [], keyPrefix = '', allowDuplicateAdd = false, handleAddingDuplicateTracks }) => {
+const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, keyPrefix = '', allowDuplicateAdd = false }) => {
     // Add these logs at the start of TrackList to verify props received
     // console.log('Tracks Edited: ', tracksEdited)
     // console.log('Tracks: ', tracks)
@@ -25,18 +25,18 @@ const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, playlistTracks 
     if (currentTracks.length === 0 && tracks.length > 0) {
         console.log('There are fewer tracks than the tracks per page')
         return <p>There are fewer tracks than the tracks per page.</p>;
-    };
+    }
 
     // If currentTracks is falsy or the array length is 0, display no tracks found
     if (!currentTracks || currentTracks.length === 0) {
         return;
-    };
+    }
 
 
     // Selects playlist track by id
     const isSelected = (track) => {
     // if (allowDuplicateAdd) return false;
-      return !allowDuplicateAdd && playlistTracks.some(t => t.uniqueKey === track.uniqueKey);
+      return !allowDuplicateAdd && tracks.some(t => t.uniqueKey === track.uniqueKey);
 
     //  return playlistTracks.some(
     //     (playlistTrack) => playlistTrack.uniqueKey === track.uniqueKey
@@ -77,6 +77,7 @@ const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, playlistTracks 
                         onAdd={onAdd}
                         onRemove={onRemove}
                         isSelected={isSelected}
+                        keyPrefix={keyPrefix}
 
                
                     />

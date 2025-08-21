@@ -1,17 +1,30 @@
 import React, { useCallback, useState } from 'react';
 import TrackList from '../Tracklist/Tracklist';
 import EditingPlaylist from './EditPlaylist';
-import { makeSpotifyRequest } from '../Authorization/Requests';
+import { makeSpotifyRequest } from '../../util/api';
 import PagesSetUp from './PagesSetUp';
 
-export default function Playlist({existingPlaylist, setExistingPlaylist, onNameChange, onEdit, onAdd, 
-                                onRemove, onSave, playlistTracks, playlistName, searchResults, setSearchLoading,
-                                setTransferLoading, onEditOpen, onEditClose, dashboardOpen, setShowModal}) {
+export default function Playlist({
+    existingPlaylist, 
+    setExistingPlaylist, 
+    onNameChange, 
+    onEdit, 
+    onAdd,                 
+    onRemove, 
+    onSave, 
+    playlistTracks, 
+    playlistName, 
+    searchResults, 
+    setSearchLoading,
+    setTransferLoading, 
+    onEditOpen, 
+    onEditClose, 
+    dashboardOpen,
+        setShowModal
+}) {
     const [selectedPlaylist, setSelectedPlaylist] = useState(null);
     const [currentPlaylistPage, setCurrentPlaylistPage] = useState(0);
     const [tracksEdited, setTracksEdited] = useState([]);
-    const [trackDuplicationCounts, setTrackDuplicationCounts] = useState({});
-    const [ duplicateTrack, setDuplicateTrack ] = useState(null);
     
     const playlistPerPage = 5;
     const startIndex = currentPlaylistPage * playlistPerPage;
@@ -65,7 +78,7 @@ export default function Playlist({existingPlaylist, setExistingPlaylist, onNameC
     const handlePlaylistRemove = (playlist_id) => {
         try {
             setExistingPlaylist((prev) => {
-                 return prev.filter((playlistToRemove) => playlistToRemove.playlistId !== playlist_id)
+                return prev.filter((playlistToRemove) => playlistToRemove.playlistId !== playlist_id)
             })
 
         } catch (error) {
@@ -123,35 +136,12 @@ export default function Playlist({existingPlaylist, setExistingPlaylist, onNameC
         }
     };
 
-    const handleAddingDuplicateTracks = useCallback((track) => {
-        const baseKey = track.id;
-
-        setTrackDuplicationCounts(prevCounts => {
-            const newCounts = { ...prevCounts };
-            newCounts[baseKey] = (newCounts[baseKey] || 1) + 1;
-
-            const uniqueKey = `${baseKey}-${newCounts[baseKey]}`;
-
-            const trackWithUniqueKey = {
-                ...track,
-                uniqueKey: uniqueKey
-            };
-
-            setTracksEdited(prevTracks => {
-                if (prevTracks.some(t => t.uniqueKey === uniqueKey)) return prevTracks;
-                return [trackWithUniqueKey, ...prevTracks];
-            });
-
-            return newCounts; 
-        });
-    }, [setTracksEdited]);
-
-
    
     return (
         <div className='displayPlaylistsContainer'>
             <div className='playlistNameInput'>
                 <input 
+                    data-testid="playlist-name-input"
                     onChange={handleNewPlaylistNameChange} 
                     value={playlistName}
                     placeholder="New Playlist"
@@ -161,11 +151,10 @@ export default function Playlist({existingPlaylist, setExistingPlaylist, onNameC
             </div>
 
             <TrackList
-                keyPrefix='playlist-'
+                keyPrefix='playlist'
                 tracks={playlistTracks}
                 onAdd={onAdd} 
                 onRemove={onRemove}
-                playlistTracks={playlistTracks}
                 allowDuplicateAdd={false}
                 tracksPerPage={5}
 

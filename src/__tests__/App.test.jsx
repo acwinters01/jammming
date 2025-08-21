@@ -1,29 +1,33 @@
-import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import App from '../Components/App/App'
+import { vi } from 'vitest';
+import App from '../App'
 
 
 // Mocking the Authorization component
-jest.mock('../Components/Authorization/Authorization', () => {
+vi.mock('../util/Authorization', () => {
 
     // Make sure to grab the exports from the component
-    const actual = jest.requireActual('../Components/Authorization/Authorization');
+    const actual = vi.importActual('../util/Authorization');
 
     return {
         ...actual, // use the real exports
         default: ({ onLogin }) => <button onClick={onLogin}>Login with Spotify</button>,
-        isTokenExpired: jest.fn(() => false), // replacing function with a fake
-        refreshToken: jest.fn(() => Promise.resolve('new_token')), // replacing function with a fake that resolves to 'new token'
-        __esModule: true // making sure jest understands defaut and named exports
+        isTokenExpired: vi.fn(() => false), // replacing function with a fake
+        refreshToken: vi.fn(() => Promise.resolve('new_token')), // replacing function with a fake that resolves to 'new token'
+        __esModule: true // making sure vi understands defaut and named exports
     }
 });
 
-jest.mock('../Components/Authorization/Loading', () => ({ isLoading }) =>
-  isLoading ? <div>Loading...</div> : null
-);
+vi.mock('../Components/Loading/Loading', () => {
+    return {
+        default: ({ isLoading }) => (isLoading ? <div>Loading...</div> : null),
+    }
+});
 
 describe('App Component', () => {
+
+    
     beforeEach(() => {
         // Mock tokens
         localStorage.setItem('access_token', 'mock_token');
@@ -34,7 +38,8 @@ describe('App Component', () => {
     afterEach(()=> {
         // Deletes mock tokens after every test
         localStorage.clear()
-    })
+    });
+    
     it('shows the loading screen after clicking login', async() => {
         render(<App />);
 
@@ -45,6 +50,8 @@ describe('App Component', () => {
         await waitFor(() => {
             expect(screen.getByText('Loading...')).toBeInTheDocument();
 
-        })
-    }) 
+        });
+    });
+
+    
 });
