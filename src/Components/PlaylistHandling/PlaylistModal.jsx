@@ -1,3 +1,5 @@
+import React from "react";
+
 const PlaylistModal = ({ message, onClose }) => {
   return (
     <div className="modal-overlay">

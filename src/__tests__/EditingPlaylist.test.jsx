@@ -1,7 +1,7 @@
 import React from 'react';
 import { vi } from 'vitest';
 import { render, fireEvent, screen } from '@testing-library/react';
-import EditingPlaylist from '../components/Playlist/EditPlaylist';
+import EditingPlaylist from '../components/PlaylistHandling/EditPlaylist';
 import DuplicateTrackModal from '../components/Track/DuplicateTrackModal';
 import TrackList from '../components/Tracklist/Tracklist';
 

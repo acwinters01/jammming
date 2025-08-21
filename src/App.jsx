@@ -1,26 +1,26 @@
 import React, {useCallback, useState} from 'react';
-import Playlist from './components/Playlist/Playlist';
+import Playlist from './components/PlaylistHandling/Playlist';
 import Authorization from './util/Authorization';
 import Dashboard from './components/Dashboard/Dashboard';
 import SearchBar from './components/SearchBar/SearchBar';
 import SearchResults from './components/SearchResults/SearchResults';
 import Loading from './components/Loading/Loading'
 import DuplicateTrackModal from './components/Track/DuplicateTrackModal';
-import PlaylistModal from './components/Playlist/PlaylistModal'
+import PlaylistModal from './components/PlaylistHandling/PlaylistModal'
 import './styles/App.css'
 import './styles/App-mobile.css'
 import './styles/reset.css'
 
 
 function App() {
-
+  console.log('%cAPP RENDERED', 'color: hotpink');
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Track authentication state
 
   const [searchResults, setSearchResults] = useState([]);
   const [existingPlaylist, setExistingPlaylist] = useState([]);
   const [newPlaylistTracks, setNewPlaylistTracks] = useState([]);
   const [playlistName, setPlaylistName] = useState('');
-  let setIsDuplicateModalVisible = false;
+  const [, setIsDuplicateModalVisible] = useState(false);
   const [ duplicateTrack, setDuplicateTrack ] = useState(null);
 
   const [dashboardOpen, setDashboardOpen] = useState(false);
@@ -38,18 +38,26 @@ function App() {
   const [transferLoading, setTransferLoading] = useState(false);
   const isAnyLoading = () => searchLoading || transferLoading;
 
+  console.log(`Dashboard is open: ${dashboardOpen}`)
   // Toggle
   const toggleDashboard = () => {
     if (isEditing) return;
     setDashboardOpen(!dashboardOpen);
   }
+
   const handleEditOpen = () => {
     if (dashboardOpen) {
-      setShowModal(true); // Show modal if dashboard is open
+      // setShowModal(true); // Show modal if dashboard is open
+      setDashboardOpen(false)
+      setTimeout(() => {
+      setIsEditing(true);
+    }, 300);
     } else {
       setIsEditing(true);
     }
   }
+
+
   const handleEditClose = () => setIsEditing(false);
   const closeModal = () => setShowModal(false);
 
@@ -128,7 +136,6 @@ function App() {
 
     // console.log('Saving playlist', newPlaylist)
     setExistingPlaylist((prev) => [...prev, newPlaylist]);    
-    
     setPlaylistName('');
     setNewPlaylistTracks([]);
 
@@ -146,9 +153,8 @@ function App() {
 
   const handleLogin = () => {
     setIsAuthenticated(true);
-    setIsAppLoaded(true);
     // For testing
-    // setTimeout(() => setIsAppLoaded(true), 1000); 
+    setTimeout(() => setIsAppLoaded(true), 1000); 
   };
 
   const handleLogout = () => {
@@ -157,6 +163,7 @@ function App() {
     localStorage.removeItem('expires_in');
     setIsAuthenticated(false);
     setIsAppLoaded(false);
+    setIsEditing(false)
   }
 
   const handleSetSearchLoading = useCallback((bool) => {
@@ -239,7 +246,7 @@ function App() {
             <button className="dashboardToggle" onClick={toggleDashboard} disabled={isEditing}>
               {dashboardOpen ? '>' : '<'}
             </button>
-            <Dashboard setExistingPlaylist={setExistingPlaylist} existingPlaylist={existingPlaylist} isOpen={dashboardOpen}/>
+            <Dashboard setExistingPlaylist={setExistingPlaylist} existingPlaylist={existingPlaylist} onEditOpen={handleEditOpen} isOpen={dashboardOpen}/>
           </div>
 
           {/* Modal */}

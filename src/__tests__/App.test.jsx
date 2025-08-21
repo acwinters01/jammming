@@ -47,10 +47,9 @@ describe('App Component', () => {
         expect(loginButton).toBeInTheDocument();
 
         await userEvent.click(loginButton);
-        await waitFor(() => {
-            expect(screen.getByText('Loading...')).toBeInTheDocument();
+        const loadingElement = await screen.findByText('Loading...');
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
 
-        });
     });
 
     

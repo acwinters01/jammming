@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import { vi } from 'vitest';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import Playlist from '../components/Playlist/Playlist';
+import Playlist from '../components/PlaylistHandling/Playlist';
 import SearchResults from '../components/SearchResults/SearchResults';
 import { makeSpotifyRequest } from '../util/api';
 

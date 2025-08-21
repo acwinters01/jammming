@@ -2,7 +2,7 @@ import React from "react";
 import { vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import DuplicateTrackModal from "../components/Track/DuplicateTrackModal";
-import EditingPlaylist from "../components/Playlist/EditPlaylist";
+import EditingPlaylist from "../components/PlaylistHandling/EditPlaylist";
 import SearchResults from '../components/SearchResults/SearchResults';
 
 

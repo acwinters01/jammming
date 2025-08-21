@@ -21,7 +21,7 @@
         const selectedPlaylistObj = existingPlaylist[selectedPlaylist];
         const [isEditingName, setIsEditingName] = useState(false);
         const [ duplicateTrack, setDuplicateTrack ] = useState(null);
-        let setIsDuplicateModalVisible = false;
+        const [, setIsDuplicateModalVisible] = useState(false);
         const [playlistName, setPlaylistName] = useState(selectedPlaylistObj ? selectedPlaylistObj.playlistName : '');
         const [searchResults, setSearchResults] = useState([]); 
         const tracksPerTrackPage = 10; // Adjust as needed for display

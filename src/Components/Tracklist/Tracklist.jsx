@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Track from '../Track/Track';
-import PagesSetUp from '../Playlist/PagesSetUp';
+import PagesSetUp from '../PlaylistHandling/PagesSetUp';
 
 
 const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, keyPrefix = '', allowDuplicateAdd = false }) => {

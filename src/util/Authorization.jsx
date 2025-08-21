@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import Loading from '../components/Loading/Loading';
 
 
@@ -216,7 +215,7 @@ function Authorization({ onLogin, onLogout }) {
             setLoading(false)
         }
         
-    }, [onLogin, accessToken, setAccessToken]);
+    }, []);
 
     if(loading) return <Loading />
 

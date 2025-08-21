@@ -20,7 +20,7 @@ export default function Playlist({
     onEditOpen, 
     onEditClose, 
     dashboardOpen,
-        setShowModal
+    setShowModal
 }) {
     const [selectedPlaylist, setSelectedPlaylist] = useState(null);
     const [currentPlaylistPage, setCurrentPlaylistPage] = useState(0);

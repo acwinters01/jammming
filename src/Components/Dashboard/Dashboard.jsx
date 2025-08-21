@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { getUserPlaylists, getUserProfile, makeSpotifyRequest } from '../../util/api';
-import PagesSetUp from '../Playlist/PagesSetUp';
+import PagesSetUp from '../PlaylistHandling/PagesSetUp';
+import Loading from '../Loading/Loading';
 
-const Dashboard = (props) => {
+const Dashboard = ({setExistingPlaylist}) => {
     const [userProfile, setUserProfile] = useState(null);
     const [userPlaylistData, setUserPlaylistData] = useState(null)
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true); // Add a loading state
+    const [isPlaylistLoading, setIsPlaylistLoading] = useState(false)
 
     // Pagination state
     const [currentPage, setCurrentPage] = useState(0);
@@ -62,6 +64,7 @@ const Dashboard = (props) => {
 
     const handlePlaylistSync = useCallback(async (playlist) => {
         let prevPlaylistTracks = [];
+        setIsPlaylistLoading(true);
 
         try {
             const initalTracksResponse = await makeSpotifyRequest(`playlists/${playlist.id}/tracks`, 'GET');
@@ -131,27 +134,30 @@ const Dashboard = (props) => {
 
         // console.log("Edit Playlist Updated:", editingPlaylist);
 
-        props.setExistingPlaylist((prevPlaylists) => {
+        setExistingPlaylist((prevPlaylists) => {
             // Ensure prevPlaylists is an array and editingPlaylist has tracks
             const validPrevPlaylists = Array.isArray(prevPlaylists) ? prevPlaylists : [];
             
             if (editingPlaylist.tracks && editingPlaylist.tracks.length > 0) {
                 return [...validPrevPlaylists, editingPlaylist];
             } else {
-                console.log("No tracks available in editing playlist, skipping update.");
+                // console.log("No tracks available in editing playlist, skipping update.");
                 return validPrevPlaylists; // Return the previous state without changes if no tracks
             }
         });
 
         // console.log('Logging existing playlist...');
 
-    }, [props]);
+        setIsPlaylistLoading(false);
+
+    }, [setExistingPlaylist]);
 
     return (
         <div className='displayDashboard'>    
             {isLoading ? (
                 <div className='dashboardLoading'>
                     <p>Loading...</p>
+                    <Loading isLoading={true}/>
                 </div>
             ) : (
                 <>
@@ -189,11 +195,16 @@ const Dashboard = (props) => {
                                                         )}
                                                     </div>
                                                     
+                                                 {isPlaylistLoading ? (
+                                                        <Loading isLoading={true}/>
+                                                    ) : (
                                                     <div className='playlistText' id='dashboardText'>
                                                         <p>{playlist.name}</p>
                                                         <button id={`toApp`} key={`${index}-toApp`} onClick={() => handlePlaylistSync(playlist)}>Sync Playlist to App</button>
                                                     </div>
+                                                    )}
                                                 </div>
+                                                    
                                             ))
                                         }
     
