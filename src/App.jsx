@@ -7,7 +7,7 @@ const SearchResults = lazy(() => import('./components/SearchResults/SearchResult
 const Loading = lazy(() => import('./components/Loading/Loading'));
 const DuplicateTrackModal = lazy(() => import('./components/Track/DuplicateTrackModal'))
 const PlaylistModal = lazy(() => import('./components/PlaylistHandling/PlaylistModal'))
-import { initiateAuthorization, isTokenExpired, refreshToken } from './util/spotify_authorization';
+import { isTokenExpired, refreshToken } from './util/spotify_authorization';
 import './styles/App.css'
 import './styles/App-mobile.css'
 import './styles/reset.css'
@@ -40,7 +40,7 @@ function App() {
 
 
   useEffect(() => {
-  const token = localStorage.getItem('access_token');
+  // const token = localStorage.getItem('access_token');
   const expired = isTokenExpired();
 
   if (token && !expired) {
