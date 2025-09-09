@@ -285,6 +285,16 @@ function App() {
                 onClose={() => setShowPlaylistModal(false)} />)}
             </>
           )}
+            <div >
+              <a
+                className="link-to-home"
+                href="https://acwinters01.github.io/react-portfolio/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Link to Portfolio
+            </a>
+          </div>        
         </div>
       </Suspense>
     </>
