@@ -40,7 +40,7 @@ function App() {
 
 
   useEffect(() => {
-  // const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem('access_token');
   const expired = isTokenExpired();
 
   if (token && !expired) {
@@ -176,7 +176,7 @@ function App() {
     
   };
 
-  const handleLogout = (token) => {
+  const handleLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('expires_in');
