@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, Suspense, lazy } from 'react';
 import TrackList from '../Tracklist/Tracklist';
-import EditingPlaylist from './EditPlaylist';
+const EditingPlaylist = lazy(() => import('./EditPlaylist'));
+const PagesSetUp = lazy(() => import('./PagesSetUp'));
 import { makeSpotifyRequest } from '../../util/api';
-import PagesSetUp from './PagesSetUp';
 
-export default function Playlist({
+function Playlist({
     existingPlaylist, 
     setExistingPlaylist, 
     onNameChange, 
@@ -209,36 +209,46 @@ export default function Playlist({
                         <p>No playlists available</p>
                     </div>
                 )}
-                <div className='pagination'>
-                    {/* Playlist Pagination */}
-                    <PagesSetUp
-                        currentPage={currentPlaylistPage}
-                        setCurrentPage={setCurrentPlaylistPage}
-                        totalPages={Math.ceil(existingPlaylist.length / playlistPerPage)}
-                        goToNextPage={goToNextPlaylistPage}
-                        goToPreviousPage={goToPreviousPlaylistPage}
-                    />
-                </div>
-
-                {/* Editing Selected Playlist */}
-                {selectedPlaylist !== null && (
-                    <div className='editPlaylistContainer'>
-                        <EditingPlaylist 
-                            selectedPlaylist={selectedPlaylist}
-                            setSelectedPlaylist={setSelectedPlaylist}
-                            tracks={existingPlaylist[selectedPlaylist]?.tracks}
-                            searchResults={searchResults}
-                            onNameChange={onNameChange}
-                            existingPlaylist={existingPlaylist}
-                            tracksEdited={tracksEdited}
-                            setTracksEdited={setTracksEdited}
-                            onEdit={onEdit}
-                            handleExitEditMode={handleExitEditMode} 
-                            setSearchLoading={setSearchLoading}
+                <Suspense fallback={<div>Loading...</div>}>
+                    <div className='pagination'>
+                        {/* Playlist Pagination */}
+                        <PagesSetUp
+                            currentPage={currentPlaylistPage}
+                            setCurrentPage={setCurrentPlaylistPage}
+                            totalPages={Math.ceil(existingPlaylist.length / playlistPerPage)}
+                            goToNextPage={goToNextPlaylistPage}
+                            goToPreviousPage={goToPreviousPlaylistPage}
                         />
                     </div>
-                )}
+                </Suspense>
+
+                {/* Editing Selected Playlist */}
+               
+                    <Suspense fallback={<div>Loading...</div>}>
+                    {selectedPlaylist !== null && (
+                         
+                            <div className='editPlaylistContainer'>
+                                <EditingPlaylist 
+                                    selectedPlaylist={selectedPlaylist}
+                                    setSelectedPlaylist={setSelectedPlaylist}
+                                    tracks={existingPlaylist[selectedPlaylist]?.tracks}
+                                    searchResults={searchResults}
+                                    onNameChange={onNameChange}
+                                    existingPlaylist={existingPlaylist}
+                                    tracksEdited={tracksEdited}
+                                    setTracksEdited={setTracksEdited}
+                                    onEdit={onEdit}
+                                    handleExitEditMode={handleExitEditMode} 
+                                    setSearchLoading={setSearchLoading}
+                                />
+                            </div>
+                     
+                    )}
+                       </Suspense>
+      
             </div>
         </div>
     );
 }
+
+export default React.memo(Playlist);

@@ -196,7 +196,7 @@ fit with tracks and playlists */
     }
 
     #title-spacer {
-        height: 0;
+        height: 2rem;
     }
 
    
@@ -264,7 +264,6 @@ fit with tracks and playlists */
      .AppContainer .authorizationContainer {
         position: sticky;
         display: flex;
-        background-color: #161514;
         width: 100%;
         margin: 0;
         top: 5em !important;
@@ -348,7 +347,7 @@ fit with tracks and playlists */
         min-width: 80%;
     }
 
-      .PlaylistsContainer {
+    .PlaylistsContainer {
         background-color: #B4ADEA;
         margin-bottom: .5rem;
 
@@ -381,6 +380,37 @@ fit with tracks and playlists */
         margin: 0 auto;
         overflow-y: auto;
         top: 0rem;
+    }
+
+    .dashboardPlaylist {
+        width: 13.5rem;
+        height: 13.5rem;
+    }
+
+    .dashboardContainer {
+        width: 250px;
+    }
+
+    .dashboardProfileImage img {
+        width: 200px;
+        height: 200px;
+    }
+
+    .AppContainer.dashboard-open .dashboardToggle {
+        right: 17.6rem;
+    }
+
+    #dashboardText {
+        position: absolute;
+        z-index: 200;
+        left: 10%;
+        top: 70%;
+    }
+
+    .userInfo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
 
@@ -421,8 +451,18 @@ fit with tracks and playlists */
         width: 200px;
     }
 
+    .dashboardPlaylist {
+        height: 15rem;
+        width: auto;
+    }
+
     .dashboardProfileImage img {
-        width: 100%;
+        width: 200px;
+        height: 200px;
+    }
+
+    #dashboardText { 
+        left: 0;
     }
 
     .usersPlaylist-TitleContainer h3 {

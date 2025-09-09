@@ -1,6 +1,6 @@
 import React from "react";
 import { vi } from 'vitest';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, act } from '@testing-library/react';
 import DuplicateTrackModal from "../components/Track/DuplicateTrackModal";
 import EditingPlaylist from "../components/PlaylistHandling/EditPlaylist";
 import SearchResults from '../components/SearchResults/SearchResults';
@@ -129,7 +129,7 @@ describe('Duplicate Track Modal Component', () => {
     });
 
 
-    it('modal pops up when user attempts to add same track', () => {
+    it('modal pops up when user attempts to add same track', async() => {
         // SET UP //
         const editingModalResult = render(<EditingPlaylist {...defaultEditingPlaylistProps} />);
         editingModalResult.container.querySelector('.displayEditingPlaylist');
@@ -170,7 +170,10 @@ describe('Duplicate Track Modal Component', () => {
     it('cancel button is clickable', async() => {
 
         // SET UP
-        render(<EditingPlaylist {...defaultEditingPlaylistProps} />);
+        await act(async () => {
+          render(<EditingPlaylist {...defaultEditingPlaylistProps}/>);
+        });
+        
         const searchResults = render(<SearchResults {...searchProps}/>);
         searchResults.container.querySelector('.displaySearchResults');
 

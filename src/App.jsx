@@ -1,12 +1,13 @@
-import React, {useCallback, useState} from 'react';
-import Playlist from './components/PlaylistHandling/Playlist';
-import Authorization from './util/Authorization';
-import Dashboard from './components/Dashboard/Dashboard';
-import SearchBar from './components/SearchBar/SearchBar';
-import SearchResults from './components/SearchResults/SearchResults';
-import Loading from './components/Loading/Loading'
-import DuplicateTrackModal from './components/Track/DuplicateTrackModal';
-import PlaylistModal from './components/PlaylistHandling/PlaylistModal'
+import React, {lazy, Suspense, useCallback, useMemo, useState, useEffect } from 'react';
+const Playlist = lazy(() => import('./components/PlaylistHandling/Playlist'));
+const SearchBar = lazy(() => import('./components/SearchBar/SearchBar'));
+const Authorization = lazy(() => import('./components/Authorization/Authorization'));
+const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'))
+const SearchResults = lazy(() => import('./components/SearchResults/SearchResults'))
+const Loading = lazy(() => import('./components/Loading/Loading'));
+const DuplicateTrackModal = lazy(() => import('./components/Track/DuplicateTrackModal'))
+const PlaylistModal = lazy(() => import('./components/PlaylistHandling/PlaylistModal'))
+import { initiateAuthorization, isTokenExpired, refreshToken } from './util/spotify_authorization';
 import './styles/App.css'
 import './styles/App-mobile.css'
 import './styles/reset.css'
@@ -14,8 +15,7 @@ import './styles/reset.css'
 
 function App() {
   console.log('%cAPP RENDERED', 'color: hotpink');
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Track authentication state
-
+  const [accessToken, setAccessToken] = useState(localStorage.getItem('access_token') || '');
   const [searchResults, setSearchResults] = useState([]);
   const [existingPlaylist, setExistingPlaylist] = useState([]);
   const [newPlaylistTracks, setNewPlaylistTracks] = useState([]);
@@ -34,11 +34,28 @@ function App() {
 
   // Loading Screens
   const [isAppLoaded, setIsAppLoaded] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
+  const [, setSearchLoading] = useState(false);
   const [transferLoading, setTransferLoading] = useState(false);
-  const isAnyLoading = () => searchLoading || transferLoading;
 
-  console.log(`Dashboard is open: ${dashboardOpen}`)
+
+
+  useEffect(() => {
+  const token = localStorage.getItem('access_token');
+  const expired = isTokenExpired();
+
+  if (token && !expired) {
+    setAccessToken(token);
+    setIsAppLoaded(true);
+  } else if (token && expired) {
+    refreshToken().then(newToken => {
+      if (newToken) {
+        setAccessToken(newToken);
+        setIsAppLoaded(true);
+      }
+    });
+  }
+}, []);
+
   // Toggle
   const toggleDashboard = () => {
     if (isEditing) return;
@@ -151,17 +168,19 @@ function App() {
 
   },[])
 
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-    // For testing
-    setTimeout(() => setIsAppLoaded(true), 1000); 
+  const handleLogin = (token) => {
+    if(token) {
+      setAccessToken(token);    
+      setIsAppLoaded(true), 1000; 
+    }
+    
   };
 
-  const handleLogout = () => {
+  const handleLogout = (token) => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     localStorage.removeItem('expires_in');
-    setIsAuthenticated(false);
+    setAccessToken('');
     setIsAppLoaded(false);
     setIsEditing(false)
   }
@@ -170,7 +189,7 @@ function App() {
     setSearchLoading(bool);
   }, []);
 
-  const playlistProps = {
+  const playlistProps = useMemo(() => ({
     playlistName,
     playlistTracks:newPlaylistTracks,
     onNameChange: updatePlaylistName,
@@ -191,72 +210,86 @@ function App() {
     setShowModal:setShowModal,
     showModal:showModal,
     dashboardOpen:dashboardOpen,
-  }
+  }), [
+    playlistName, newPlaylistTracks, updatePlaylistName, setPlaylistName,setExistingPlaylist, 
+    existingPlaylist, searchResults, editExistingPlaylist, savePlaylist, removeTrack, addTrack,
+    setSearchLoading, setTransferLoading, transferLoading, handleEditOpen, handleEditClose, setShowModal,
+    showModal, dashboardOpen
+  ]);
 
   return (
-    <div className={`AppContainer ${dashboardOpen ? 'dashboard-open' : ''} ${isEditing ? 'editing-active' : ''}`}>
-      <div className='mainAppTitle'>
-        <h1>Ja<span>mmm</span>ing</h1>
-      </div>
-      
-      {!isAuthenticated ? (
-        <div className='authorizationContainer'>
-          <Authorization onLogin={handleLogin} onLogout={handleLogout}/>
-        </div>
-      ) : !isAppLoaded ? (
-        <Loading isLoading={true}/>
-      ) : (
-        <>
-          {<Loading isLoading={isAnyLoading()}/>}
-          <div className='authorizationContainer' id="logOut">
-            <Authorization onLogin={handleLogin} onLogout={handleLogout}/>
+    <>
+    <Suspense fallback={<div>Loading...</div>}>
+        <div className={`AppContainer ${dashboardOpen ? 'dashboard-open' : ''} ${isEditing ? 'editing-active' : ''}`}>
+          <div className='mainAppTitle'>
+            <h1>Ja<span>mmm</span>ing</h1>
           </div>
-          <div className='spacer'id='title-spacer'></div>
+  
+          
+          {!accessToken ? (
+            <div className='authorizationContainer'>
+              <Authorization onLogin={handleLogin} onLogout={handleLogout} />
+            </div>
+          ) : !isAppLoaded ? (
+            <Loading isLoading={true} />
+          ) : (
+            <>
+              <div className='authorizationContainer' id="logOut">
+                <Authorization onLogin={handleLogin} onLogout={handleLogout}/>
+              </div>
+              <div className='spacer'id='title-spacer'></div>
+              <div className='main'>
+                <div className='appStart'>
+                  <div className='PlaylistsContainer'>
+                    <div className='playlistTitle'>
+                      <h2 id='title'>Playlists</h2>
+                    </div>
+                    <Playlist {...playlistProps}/>
+                  </div>
+                  <div className='search'>
+                  <div className='searchBarContainer'>
+                    <h2 id='title'>Results</h2>
+                    <SearchBar onSearchResults={handleSearchResults} setSearchLoading={handleSetSearchLoading} />
+                  </div>
 
-          <div className='main'>
-            <div className='appStart'>
-              <div className='PlaylistsContainer'>
-                <div className='playlistTitle'>
-                  <h2 id='title'>Playlists</h2>
+                  
+                  <div className='searchResultsContainer'>
+                    <SearchResults 
+                      tracks={searchResults} 
+                      onAdd={addTrack} 
+                      onRemove={removeTrack} 
+                      playlistTracks={newPlaylistTracks} 
+                      keyPrefix={'search-'} 
+                    />
+                  </div>
                 </div>
-                <Playlist {...playlistProps}/>
-              </div>
-              <div className='search'>
-              <div className='searchBarContainer'>
-                <h2 id='title'>Results</h2>
-                <SearchBar onSearchResults={handleSearchResults} setSearchLoading={handleSetSearchLoading} />
-              </div>
-              <div className='searchResultsContainer'>
-                <SearchResults 
-                  tracks={searchResults} 
-                  onAdd={addTrack} 
-                  onRemove={removeTrack} 
-                  playlistTracks={newPlaylistTracks} 
-                  keyPrefix={'search-'} 
-                />
-              </div>
-            </div>
-            </div>
+                </div>
 
-          </div>
+              </div>
 
-          {/* Dashboard Component */}
-          <div className={`dashboardContainer ${dashboardOpen ? 'open' : ''}`}>
-                {/* Dashboard Toggle Button */}
-            <button className="dashboardToggle" onClick={toggleDashboard} disabled={isEditing}>
-              {dashboardOpen ? '>' : '<'}
-            </button>
-            <Dashboard setExistingPlaylist={setExistingPlaylist} existingPlaylist={existingPlaylist} onEditOpen={handleEditOpen} isOpen={dashboardOpen}/>
-          </div>
+              {/* Dashboard Component */}
+              <div className={`dashboardContainer ${dashboardOpen ? 'open' : ''}`}>
+                    {/* Dashboard Toggle Button */}
+                <button className="dashboardToggle" onClick={toggleDashboard} disabled={isEditing}>
+                  {dashboardOpen ? '>' : '<'}
+                </button>
+                <Dashboard setExistingPlaylist={setExistingPlaylist} existingPlaylist={existingPlaylist} onEditOpen={handleEditOpen} isOpen={dashboardOpen}/>
+              </div>
 
-          {/* Modal */}
-          {showModal && ( <PlaylistModal message="Close the dashboard to edit a playlist." onClose={closeModal} />)}
-          <DuplicateTrackModal track={duplicateTrack} onConfirm={handleConfirmAdd} onCancel={handleCancelAdd} />
-          {showPlaylistModal && ( <PlaylistModal message={playlistModalMessage} onClose={() => setShowPlaylistModal(false)} />)}
-        </>
-      )}
-    </div>
+              {/* Modal */}
+              {showModal && ( <PlaylistModal message="Close the dashboard to edit a playlist." onClose={closeModal} />)}
+              <DuplicateTrackModal track={duplicateTrack} onConfirm={handleConfirmAdd} onCancel={handleCancelAdd} />
+              {showPlaylistModal && ( 
+                <PlaylistModal 
+                message={playlistModalMessage} 
+                onClose={() => setShowPlaylistModal(false)} />)}
+            </>
+          )}
+        </div>
+      </Suspense>
+    </>
   );
+
 }
 
 export default App;

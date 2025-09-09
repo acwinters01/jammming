@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, Suspense, lazy } from 'react';
 import { getUserPlaylists, getUserProfile, makeSpotifyRequest } from '../../util/api';
-import PagesSetUp from '../PlaylistHandling/PagesSetUp';
-import Loading from '../Loading/Loading';
+const PagesSetUp = lazy(() => import('../PlaylistHandling/PagesSetUp'))
+const Loading = lazy(() => import('../Loading/Loading'))
 
 const Dashboard = ({setExistingPlaylist}) => {
     const [userProfile, setUserProfile] = useState(null);
@@ -157,7 +157,9 @@ const Dashboard = ({setExistingPlaylist}) => {
             {isLoading ? (
                 <div className='dashboardLoading'>
                     <p>Loading...</p>
-                    <Loading isLoading={true}/>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Loading isLoading={true}/>
+                    </Suspense>
                 </div>
             ) : (
                 <>
@@ -196,7 +198,9 @@ const Dashboard = ({setExistingPlaylist}) => {
                                                     </div>
                                                     
                                                  {isPlaylistLoading ? (
+                                                    <Suspense fallback={<div>Loading...</div>}>
                                                         <Loading isLoading={true}/>
+                                                    </Suspense>
                                                     ) : (
                                                     <div className='playlistText' id='dashboardText'>
                                                         <p>{playlist.name}</p>
@@ -209,12 +213,14 @@ const Dashboard = ({setExistingPlaylist}) => {
                                         }
     
                                         {/* Pagination Component */}
-                                        <PagesSetUp
-                                            currentPage={currentPage}
-                                            totalPages={Math.ceil(userPlaylistData.items.length / playlistsPerPage)}
-                                            goToNextPage={goToNextPage}
-                                            goToPreviousPage={goToPreviousPage}
-                                        />
+                                        <Suspense fallback={<div>Loading...</div>}>
+                                            <PagesSetUp
+                                                currentPage={currentPage}
+                                                totalPages={Math.ceil(userPlaylistData.items.length / playlistsPerPage)}
+                                                goToNextPage={goToNextPage}
+                                                goToPreviousPage={goToPreviousPage}
+                                            />
+                                        </Suspense>
                                     </div>
                                 ) : (
                                     <p>No playlists available</p>

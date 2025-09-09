@@ -15,7 +15,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('./public/images/Backgrounds/andrew-kliatskyi-RJ7tsexUyJY-unsplash.jpg');
+    background-image: url('/images/Backgrounds/andrew-kliatskyi-RJ7tsexUyJY-unsplash.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -78,6 +78,7 @@ body::after{
     font-weight: 600;;
     font-size: 1.5rem;
     margin-bottom: 1.25rem;
+    text-align: center;
 }
 
 .needAuthorization button {
@@ -254,6 +255,8 @@ body::after{
 .dashboardProfileImage img {
     background-color: #1E1B18;
     padding: .125rem;
+    width: 300px;
+    height: 300px;
 }
 
 .dashboardText {
@@ -279,6 +282,8 @@ body::after{
     flex-direction: column;
     justify-content: center;
     background-color: #B4ADEA;
+    width: 17rem;
+    height: 17rem;
     padding: .5rem;
     margin: .5rem .25rem;
 }
@@ -418,7 +423,7 @@ body::after{
 
 .pagination p { 
     margin: 0rem .5rem;
-    color: black;
+    color: white;
 }
 
 .pagination button {

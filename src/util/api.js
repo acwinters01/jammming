@@ -1,4 +1,4 @@
-import { isTokenExpired, refreshToken } from "./Authorization";
+import { isTokenExpired, refreshToken } from "./spotify_authorization";
 
 // Gets stored token from local storage
 const getStoredToken = () => { 

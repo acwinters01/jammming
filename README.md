@@ -26,6 +26,7 @@ Jamming is a React-based web application that allows users to search for tracks 
 - **Spotify Web API** (accessed via backend)
 - **Vitest + React Testing Library**
 - **ESLint**
+- **Render** (for backend deployment)
 
 <br>
 
@@ -39,7 +40,7 @@ Create a `.env` in the project root (Vite requires VITE_prefix):
 ```bash
 VITE_API_BASE_URL=http://localhost:4000      # your backend base URL
 VITE_SPOTIFY_CLIENT_ID=your_client_id        # if frontend needs it for display or flows
-VITE_REDIRECT_URI=http://localhost:5173      # used if backend redirects back to frontend after OAuth
+VITE_REDIRECT_URI=http://localhost:5173      # (development) used if backend redirects back to frontend after OAuth
 
 ```
 <br>
@@ -52,7 +53,7 @@ git clone https://github.com/acwinters01/jammming-backend.git
 cd jammming-backend
 npm install
 npm run dev # or npm start 
-# Backend will likely be on http://localhost:5005
+# Backend will likely be on http://localhost:4000/
 ```
 <br>
 <br>
@@ -65,10 +66,10 @@ cd jammming
 npm install
 npm run dev # or npm start 
 
-# Frontend runs on http://localhost:3000
+# Frontend runs on http://localhost:3000/
 ```
 
-If you decide to use a different origin (e.g. :4000), enable CORS support in the backend to allow requests from the frontend. 
+If you decide to use a different origin (e.g. :5005), enable CORS support in the backend to allow requests from the frontend. 
   
 <br>
 
@@ -78,7 +79,7 @@ In the backend:
 
 ```Javascript
 import cors from 'cors';
-app.use( cors({ origin: "http://localhost:5173", credentials: true }));
+app.use( cors({ origin: "http://localhost:5173", credentials: true })); // development
 ```
 
 
@@ -99,7 +100,7 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: 'http://localhost:5005',
+                target: 'http://localhost:4000',
                 changeOrigin: true,
             }
         }
@@ -199,7 +200,7 @@ npm test
 
 ### Backend
 - Deploy separately (Render, Railway, Heroku alternative, ete)
-- Update REACT_APP_API_URL in the frontend environment to the deployed backend URL
+- Update VITE_API_URL in the frontend environment to the deployed backend URL
 
 <br>
 
@@ -223,7 +224,7 @@ npm test
     <br>
 
 - 401/403 from Spotify
-    - Ensure backend OAuth is configured ( client id / secret, redirect URI ), and tokens are being stored / forwarded correctly
+    - Ensure backend OAuth is configured ( client id, redirect URI ), and tokens are being stored / forwarded correctly
 
 <br>
 

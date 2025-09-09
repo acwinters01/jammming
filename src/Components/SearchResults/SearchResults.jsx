@@ -26,4 +26,4 @@ const SearchResults = ({ tracks, onAdd, onRemove, playlistTracks, tracksEdited, 
     )
 }
 
-export default SearchResults;
+export default React.memo(SearchResults);

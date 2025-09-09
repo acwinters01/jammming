@@ -1,4 +1,5 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import React, { Suspense } from 'react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import App from '../App'
@@ -8,22 +9,20 @@ import App from '../App'
 vi.mock('../util/Authorization', () => {
 
     // Make sure to grab the exports from the component
-    const actual = vi.importActual('../util/Authorization');
+    const actual = vi.importActual('../components/Authorization');
 
     return {
         ...actual, // use the real exports
         default: ({ onLogin }) => <button onClick={onLogin}>Login with Spotify</button>,
-        isTokenExpired: vi.fn(() => false), // replacing function with a fake
+        isTokenExpired: vi.fn(() => false), 
         refreshToken: vi.fn(() => Promise.resolve('new_token')), // replacing function with a fake that resolves to 'new token'
-        __esModule: true // making sure vi understands defaut and named exports
+        __esModule: true // making sure vi understands default and named exports
     }
 });
 
-vi.mock('../Components/Loading/Loading', () => {
-    return {
-        default: ({ isLoading }) => (isLoading ? <div>Loading...</div> : null),
-    }
-});
+vi.mock('../Components/Loading/Loading', () => ({
+    default: ({ isLoading }) => (isLoading ? <div>Loading...</div> : null),
+}));
 
 describe('App Component', () => {
 
@@ -41,16 +40,20 @@ describe('App Component', () => {
     });
     
     it('shows the loading screen after clicking login', async() => {
-        render(<App />);
-
-        const loginButton = screen.getByText('Login with Spotify');
+        await act(async () => {
+            render(
+                <Suspense fallback={<div>Loading...</div>}>
+                    <App/>
+                </Suspense>
+            );
+        });
+        const loginButton = screen.getByText('Loading...');
         expect(loginButton).toBeInTheDocument();
 
-        await userEvent.click(loginButton);
-        const loadingElement = await screen.findByText('Loading...');
+        await act(async () => {
+            await userEvent.click(loginButton);
+        });
         expect(screen.getByText('Loading...')).toBeInTheDocument();
-
-    });
-
     
+    });
 });

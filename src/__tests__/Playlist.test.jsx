@@ -152,7 +152,6 @@ function HandleTrackWrapper() {
     const [existingPlaylist, setExistingPlaylist] = React.useState([...mockPlaylists]);
 
 
-
     const addingTrack = (track) => {
         setNewPlaylistTracks((prevTracks) => [...prevTracks, track])
     };

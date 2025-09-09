@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Track from '../Track/Track';
-import PagesSetUp from '../PlaylistHandling/PagesSetUp';
+const PagesSetUp = lazy(() => import('../PlaylistHandling/PagesSetUp'));
+
+
 
 
 const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, keyPrefix = '', allowDuplicateAdd = false }) => {
@@ -86,13 +88,15 @@ const TrackList = ({ tracks, tracksPerPage = 5, onAdd, onRemove, keyPrefix = '',
 
             {/* Add pagination controls */}
             {tracks.length > tracksPerPage && (
-                <PagesSetUp
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    totalPages={Math.ceil(tracks.length / tracksPerPage)}
-                    goToNextPage={goToNextPage}
-                    goToPreviousPage={goToPreviousPage}
-                />
+                <Suspense fallback={<div>Loading...</div>}>
+                    <PagesSetUp
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        totalPages={Math.ceil(tracks.length / tracksPerPage)}
+                        goToNextPage={goToNextPage}
+                        goToPreviousPage={goToPreviousPage}
+                    />
+                </Suspense>
             )}
 
         </div>

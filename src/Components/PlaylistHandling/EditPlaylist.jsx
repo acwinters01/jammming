@@ -1,8 +1,8 @@
-    import React, { useState, useEffect, useCallback, useRef } from 'react';
+    import React, { useState, useEffect, useCallback, useRef, Suspense, lazy } from 'react';
     import TrackList from '../Tracklist/Tracklist'
     import SearchBar from '../SearchBar/SearchBar';
-    import SearchResults from '../SearchResults/SearchResults';
-    import DuplicateTrackModal from '../Track/DuplicateTrackModal';
+    const SearchResults = lazy(() => import('../SearchResults/SearchResults'))
+    const DuplicateTrackModal = lazy(() => import('../Track/DuplicateTrackModal'))
     
 
 
@@ -198,12 +198,13 @@
                                 tracksPerPage={10}
                                 allowDuplicateAdd={false}
                             />
-
-                            <DuplicateTrackModal
-                                track={duplicateTrack}
-                                onConfirm={handleConfirmAdd}
-                                onCancel={handleCancelAdd}
-                            />
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <DuplicateTrackModal
+                                    track={duplicateTrack}
+                                    onConfirm={handleConfirmAdd}
+                                    onCancel={handleCancelAdd}
+                                />
+                            </Suspense>
                         </div>
                     )}
                 </div>
@@ -215,17 +216,19 @@
                         <SearchBar onSearchResults={handleSearchResults} setSearchLoading={setSearchLoading}/>
         
                         {/* Display search results in a TrackList */}
-                        <SearchResults
-                            tracks={searchResults}
-                            keyPrefix='editing-'
-                            onAdd={addTracksEditingPlaylist}
-                            onRemove={(track) => setTracksEdited((prev) => prev.filter((t) => t.uniqueKey !== track.uniqueKey))}
-                            tracksEdited={trackEdited}
-                            selectedPlaylist={selectedPlaylist}
-                            playlistTracks={trackEdited}
-                            allowDuplicateAdd={false}
-                            tracksPerPage={tracksPerTrackPage}
-                        />
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <SearchResults
+                                tracks={searchResults}
+                                keyPrefix='editing-'
+                                onAdd={addTracksEditingPlaylist}
+                                onRemove={(track) => setTracksEdited((prev) => prev.filter((t) => t.uniqueKey !== track.uniqueKey))}
+                                tracksEdited={trackEdited}
+                                selectedPlaylist={selectedPlaylist}
+                                playlistTracks={trackEdited}
+                                allowDuplicateAdd={false}
+                                tracksPerPage={tracksPerTrackPage}
+                            />
+                        </Suspense>
                     </div>
                 </div>
             </div>

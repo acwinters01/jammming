@@ -1,6 +1,6 @@
 import React from 'react';
 import { vi } from 'vitest';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen, act } from '@testing-library/react';
 import EditingPlaylist from '../components/PlaylistHandling/EditPlaylist';
 import DuplicateTrackModal from '../components/Track/DuplicateTrackModal';
 import TrackList from '../components/Tracklist/Tracklist';
@@ -170,15 +170,20 @@ function RemovingTrackWrapper() {
   
 }
 
-describe('Editing Playlist Component', () => {
+describe('Editing Playlist Component',  () => {
 
-    it('renders edit playlist header', () => {
-        render(<EditingPlaylist {...defaultEditingPlaylistProps}/>);
+    it('renders edit playlist header', async () => {
+        await act(async () => {
+          render(<EditingPlaylist {...defaultEditingPlaylistProps}/>);
+        }) 
         expect(screen.getByText(/Editing: Test/i)).toBeInTheDocument();
     });
 
-    it('allows changing the name', () => {
-        render(<EditingPlaylist {...defaultEditingPlaylistProps}/>);
+    it('allows changing the name', async() => {
+
+        await act(async () => {
+          render(<EditingPlaylist {...defaultEditingPlaylistProps}/>);
+        });
         fireEvent.click(screen.getByText(/Editing: Test/i));
         const testInput = screen.getByDisplayValue('TestPlaylist');
         fireEvent.change(testInput, {target: {value: 'Updated Name'}});
@@ -186,9 +191,10 @@ describe('Editing Playlist Component', () => {
         expect(testInput.value).toBe('Updated Name');
     });
 
-    it('calls handleExitEditMode when the cancel button is clicked', () => {
-        render(<EditingPlaylist {...defaultEditingPlaylistProps}/>);
-        fireEvent.click(screen.getByText('Cancel'));
+    it('calls handleExitEditMode when the cancel button is clicked', async() => {
+        await act(async () => {
+          render(<EditingPlaylist {...defaultEditingPlaylistProps}/>);
+        });        fireEvent.click(screen.getByText('Cancel'));
         expect(defaultEditingPlaylistProps.handleExitEditMode).toHaveBeenCalled();
 
     });
