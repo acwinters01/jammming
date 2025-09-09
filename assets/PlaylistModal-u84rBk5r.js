@@ -1,0 +1,1 @@
+import{j as l}from"./index-C94rSDxR.js";const e=({message:s,onClose:a})=>l.jsx("div",{className:"modal-overlay",children:l.jsxs("div",{className:"modal-content",children:[l.jsx("p",{children:s}),l.jsx("button",{onClick:a,id:"playlistModal",children:"Close"})]})});export{e as default};

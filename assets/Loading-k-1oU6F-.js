@@ -1,1 +1,0 @@
-import{j as a}from"./index-CKNA3gvs.js";const s=({isLoading:e=!0})=>e?a.jsx("div",{className:"modal-loading",children:a.jsx("div",{className:"modal-overlay",children:a.jsx("div",{className:"modal-content",children:a.jsx("p",{children:"Loading..."})})})}):null;export{s as default};
