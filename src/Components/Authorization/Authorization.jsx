@@ -27,7 +27,7 @@ function Authorization({ onLogin, onLogout }) {
                 const secondsUntilExpiry = (expiresAt - Date.now()) / 1000;
                 scheduleTokenRefresh(secondsUntilExpiry);
             }
-            window.history.replaceState({}, document.title, '/');
+            window.history.replaceState({}, document.title, '/jammming/');
         };
 
         if (code && !existingToken) {
