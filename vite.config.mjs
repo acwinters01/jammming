@@ -4,6 +4,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
     base: '/jammming/',
     plugins: [react()],
+    resolve: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
+    },
     test: {
         globals: true,
         environment: 'jsdom',
