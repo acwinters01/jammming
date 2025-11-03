@@ -25,26 +25,30 @@ export const base64encode = (input) => {
         .replace(/\//g, '_');
 }
 
+export const clearSpotifyTokens = () => {
+    localStorage.removeItem('code_verifier');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('expires_in');
+}
+
 export const scheduleTokenRefresh = (secondsUntilExpiry) => {
-  setTimeout(() => {
-    refreshToken().then(newToken => {
-      if (newToken) {
-        localStorage.setItem('access_token', newToken);
-        // Optionally trigger re-auth if needed
-      }
-    });
-  }, (secondsUntilExpiry - 60) * 1000); // refresh 1 min before expiry
+
+    const safeTimeout = Math.max(60, secondsUntilExpiry - 60);
+    setTimeout(() => {
+        refreshToken().then(newToken => {
+        if (newToken) {
+            localStorage.setItem('access_token', newToken);
+        }
+        });
+    }, safeTimeout * 1000); // refresh 1 min before expiry
 };
 
 
 // Initate Spotify Authorization 
 export async function initiateAuthorization(){
 
-    // Clear old tokens/verifiers
-    localStorage.removeItem('code_verifier');
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('expires_in');
+    clearSpotifyTokens();
 
     const codeVerifier = generateRandomString(64);
     localStorage.setItem('code_verifier', codeVerifier);
@@ -98,8 +102,15 @@ export async function getToken (code) {
 
         if (data.access_token) {
             localStorage.setItem('access_token', data.access_token);
-            localStorage.setItem('refresh_token', data.refresh_token);
-            localStorage.setItem('expires_in', Date.now() + data.expires_in * 1000);
+
+            if (data.refresh_token) {
+                localStorage.setItem('refresh_token', data.refresh_token);
+            }
+
+            if (data.expires_in) {
+                localStorage.setItem('expires_in', (Date.now() + data.expires_in * 1000).toString());            
+            }
+
             return data.access_token;
         } else {
             console.error('Failed to get token:', data);
@@ -135,18 +146,38 @@ export async function refreshToken () {
 
         const data = await response.json();
 
-        if (data.access_token) {
-            localStorage.setItem('access_token', data.access_token);
-            localStorage.setItem('expires_in', Date.now() + data.expires_in * 1000);
-            return data.access_token;
-        } else {
-            console.error('Failed to refresh token:', data);
+    // Spotify might say "invalid_grant" here → token revoked / reused / reauth needed
+    if (!response.ok) {
+        if (data.error === 'invalid_grant') {
+            console.warn('Refresh token revoked. Clearing and re-authorizing...');
+            clearSpotifyTokens();
+            initiateAuthorization();
             return null;
         }
-    } catch (error) {
-        console.error('Error refreshing token:', error);
+
+        console.error('Failed to refresh token:', data);
         return null;
     }
+
+    // success
+    if (data.access_token) {
+        localStorage.setItem('access_token', data.access_token);
+    }
+
+    // sometimes Spotify returns a NEW refresh token - save it
+    if (data.refresh_token) {
+        localStorage.setItem('refresh_token', data.refresh_token);
+    }
+
+    if (data.expires_in) {
+        localStorage.setItem('expires_in', (Date.now() + data.expires_in * 1000).toString());
+    }
+
+    return data.access_token;
+  } catch (err) {
+        console.error('Error refreshing token:', err);
+        return null;
+  }
 }
 
 // Check if the current access token is expired
