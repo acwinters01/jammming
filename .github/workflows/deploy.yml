@@ -1,36 +1,35 @@
 name: Deploy to Github Pages
 
-on: 
-    push: 
-        branches: 
-            - main
-jobs: 
-    build:
-        runs-on: ubuntu-latest
-        environment: github-pages
-        
-        steps: 
-            - name: Checkout repository
-              uses: actions/checkout@v3
+on:
+  push:
+    branches:
+      - main
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v3
-              with:
-                node-version: 18
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: github-pages
 
-            - name: Install dependencies
-              run: npm ci
-              
-            - name: List files
-              run: ls -R src/components
-              
-            - name: Build
-              run: npm run build
-              
-            - name: Deploy to Github Pages
-              uses: peaceiris/actions-gh-pages@v3
-              with:
-                github_token: ${{ secrets.GITHUB_TOKEN }}
-                publish_dir: ./dist
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-        
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        env:
+          VITE_SPOTIFY_CLIENT_ID: ${{ secrets.VITE_SPOTIFY_CLIENT_ID }}
+          VITE_REDIRECT_URI: ${{ secrets.VITE_REDIRECT_URI }}
+        run: npm run build
+
+      - name: Deploy to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
